@@ -61,8 +61,11 @@ export default function AddScreen() {
       setError("Enter a valid amount greater than 0.");
       return;
     }
-    if (!startDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
-      setError("Enter a date in YYYY-MM-DD format.");
+    if (
+      !startDate.match(/^\d{4}-\d{2}-\d{2}$/) ||
+      isNaN(new Date(startDate).getTime())
+    ) {
+      setError("Enter a valid date in YYYY-MM-DD format.");
       return;
     }
     setError("");
