@@ -1,6 +1,6 @@
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -22,16 +22,16 @@ export default function HomeScreen() {
   const router = useRouter();
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
-  useEffect(() => {
-    loadSubscriptions();
-  }, []);
-
-  async function loadSubscriptions() {
+  const loadSubscriptions = useCallback(async () => {
     const result = await db.getAllAsync<Subscription>(
       "SELECT * FROM subscriptions ORDER BY name ASC"
     );
     setSubscriptions(result);
-  }
+  }, [db]);
+
+  useEffect(() => {
+    loadSubscriptions();
+  }, [loadSubscriptions]);
 
   async function deleteSubscription(id: number) {
     await db.runAsync("DELETE FROM subscriptions WHERE id = ?", id);

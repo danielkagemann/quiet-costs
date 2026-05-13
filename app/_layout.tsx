@@ -28,7 +28,7 @@ export default function RootLayout() {
         </View>
       }
     >
-      <SQLiteProvider databaseName="quiet-costs.db" onInit={migrateDb} useSuspense>
+      <SQLiteProvider databaseName="quiet_costs.db" onInit={migrateDb} useSuspense>
         <Stack
           screenOptions={{
             headerStyle: { backgroundColor: "#1e40af" },
