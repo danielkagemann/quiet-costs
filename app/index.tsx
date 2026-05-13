@@ -9,37 +9,40 @@ import {
   View,
 } from "react-native";
 
-type Subscription = {
+type Cost = {
   id: number;
   name: string;
   amount: number;
-  cycle: "monthly" | "yearly";
-  category: string;
+  start_date: string;
+  payment_method: string;
+  billingCycle: "monthly" | "yearly";
+  categoryId: string;
+  spaceId: string;
 };
 
 export default function HomeScreen() {
   const db = useSQLiteContext();
   const router = useRouter();
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [costs, setCosts] = useState<Cost[]>([]);
 
-  const loadSubscriptions = useCallback(async () => {
-    const result = await db.getAllAsync<Subscription>(
-      "SELECT * FROM subscriptions ORDER BY name ASC"
+  const loadCosts = useCallback(async () => {
+    const result = await db.getAllAsync<Cost>(
+      "SELECT * FROM cost ORDER BY name ASC"
     );
-    setSubscriptions(result);
+    setCosts(result);
   }, [db]);
 
   useEffect(() => {
-    loadSubscriptions();
-  }, [loadSubscriptions]);
+    loadCosts();
+  }, [loadCosts]);
 
-  async function deleteSubscription(id: number) {
-    await db.runAsync("DELETE FROM subscriptions WHERE id = ?", id);
-    loadSubscriptions();
+  async function deleteCost(id: number) {
+    await db.runAsync("DELETE FROM cost WHERE id = ?", id);
+    loadCosts();
   }
 
-  const monthlyTotal = subscriptions.reduce((sum, s) => {
-    const monthly = s.cycle === "yearly" ? s.amount / 12 : s.amount;
+  const monthlyTotal = costs.reduce((sum, c) => {
+    const monthly = c.billingCycle === "yearly" ? c.amount / 12 : c.amount;
     return sum + monthly;
   }, 0);
 
@@ -70,9 +73,9 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Subscription list */}
+      {/* Cost list */}
       <FlatList
-        data={subscriptions}
+        data={costs}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: 16, gap: 12 }}
         ListEmptyComponent={
@@ -89,20 +92,25 @@ export default function HomeScreen() {
               <Text className="text-gray-800 font-semibold text-base">
                 {item.name}
               </Text>
-              <Text className="text-gray-500 text-xs mt-0.5 capitalize">
-                {item.category}
+              <Text className="text-gray-500 text-xs mt-0.5">
+                {item.categoryId}
               </Text>
+              {item.payment_method ? (
+                <Text className="text-gray-400 text-xs">
+                  {item.payment_method}
+                </Text>
+              ) : null}
             </View>
             <View className="items-end mr-3">
               <Text className="text-blue-700 font-bold text-base">
                 ${item.amount.toFixed(2)}
               </Text>
               <Text className="text-gray-400 text-xs capitalize">
-                {item.cycle}
+                {item.billingCycle}
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => deleteSubscription(item.id)}
+              onPress={() => deleteCost(item.id)}
               className="bg-red-100 rounded-lg p-2"
             >
               <Text className="text-red-600 text-xs font-medium">Delete</Text>
