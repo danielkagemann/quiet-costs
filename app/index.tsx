@@ -1,8 +1,8 @@
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
 import { Storage } from "@/utils/storage";
 import { Configuration } from "@/data/configuration";
+import { OverviewScreen } from "@/components/OverviewScreen";
 
 export default function HomeScreen() {
   const [welcomeSeen, setWelcomeSeen] = useState<boolean | null>(null);
@@ -26,9 +26,5 @@ export default function HomeScreen() {
     );
   }
 
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-2xl">Hallo</Text>
-    </View>
-  );
+  return <OverviewScreen />;
 }
