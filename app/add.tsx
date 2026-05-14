@@ -10,34 +10,31 @@ import {
   TextInput,
   View,
 } from "react-native";
+/*
+const db = useSQLiteContext();
+  const loadCosts = useCallback(async () => {
+    const result = await db.getAllAsync<Cost>(
+      "SELECT * FROM cost ORDER BY name ASC"
+    );
+    setCosts(result);
+  }, [db]);
 
-const CATEGORIES = [
-  "Utilities",
-  "Insurance",
-  "Taxes & Fees",
-  "Digital Services",
-  "Streaming & Media",
-  "Home & Maintenance",
-  "Mobility",
-  "Health & Fitness",
-  "Memberships",
-  "Other",
-];
-
+*/
 type Space = { id: number; name: string };
 
 export default function AddScreen() {
-  const db = useSQLiteContext();
+  return null;
+  /* const db = useSQLiteContext();
   const router = useRouter();
 
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [startDate, setStartDate] = useState(
-    new Date().toISOString().slice(0, 10)
+    new Date().toISOString().slice(0, 10),
   );
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState(Configuration.payment[0]);
   const [cycle, setCycle] = useState<"monthly" | "yearly">("monthly");
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [category, setCategory] = useState(Configuration.categories[0]);
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [spaceId, setSpaceId] = useState<string>("1");
   const [error, setError] = useState("");
@@ -47,7 +44,7 @@ export default function AddScreen() {
       (rows) => {
         setSpaces(rows);
         if (rows.length > 0) setSpaceId(rows[0].id.toString());
-      }
+      },
     );
   }, [db]);
 
@@ -78,7 +75,7 @@ export default function AddScreen() {
       paymentMethod.trim(),
       cycle,
       category,
-      spaceId
+      spaceId,
     );
     router.back();
   }
@@ -89,7 +86,6 @@ export default function AddScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
-        {/* Name */}
         <View className="gap-1">
           <Text className="text-gray-600 text-sm font-medium">Name</Text>
           <TextInput
@@ -100,7 +96,6 @@ export default function AddScreen() {
           />
         </View>
 
-        {/* Amount */}
         <View className="gap-1">
           <Text className="text-gray-600 text-sm font-medium">Amount ($)</Text>
           <TextInput
@@ -112,11 +107,8 @@ export default function AddScreen() {
           />
         </View>
 
-        {/* Start Date */}
         <View className="gap-1">
-          <Text className="text-gray-600 text-sm font-medium">
-            Start Date
-          </Text>
+          <Text className="text-gray-600 text-sm font-medium">Start Date</Text>
           <TextInput
             className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-800"
             placeholder="YYYY-MM-DD"
@@ -125,7 +117,6 @@ export default function AddScreen() {
           />
         </View>
 
-        {/* Payment Method */}
         <View className="gap-1">
           <Text className="text-gray-600 text-sm font-medium">
             Payment Method
@@ -138,7 +129,6 @@ export default function AddScreen() {
           />
         </View>
 
-        {/* Billing cycle */}
         <View className="gap-1">
           <Text className="text-gray-600 text-sm font-medium">
             Billing Cycle
@@ -166,7 +156,6 @@ export default function AddScreen() {
           </View>
         </View>
 
-        {/* Category */}
         <View className="gap-1">
           <Text className="text-gray-600 text-sm font-medium">Category</Text>
           <View className="flex-row flex-wrap gap-2">
@@ -192,7 +181,6 @@ export default function AddScreen() {
           </View>
         </View>
 
-        {/* Space */}
         {spaces.length > 0 && (
           <View className="gap-1">
             <Text className="text-gray-600 text-sm font-medium">Space</Text>
@@ -222,12 +210,8 @@ export default function AddScreen() {
           </View>
         )}
 
-        {/* Error */}
-        {error ? (
-          <Text className="text-red-500 text-sm">{error}</Text>
-        ) : null}
+        {error ? <Text className="text-red-500 text-sm">{error}</Text> : null}
 
-        {/* Save button */}
         <Pressable
           onPress={handleSave}
           className="bg-blue-700 rounded-xl py-4 items-center mt-2"
@@ -238,5 +222,5 @@ export default function AddScreen() {
         </Pressable>
       </ScrollView>
     </KeyboardAvoidingView>
-  );
+  );*/
 }
