@@ -1,12 +1,14 @@
-import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "./base/Button";
+import { Text } from "./base/Text";
 import Animated, {
   BounceInDown,
   BounceInUp,
   FadeIn,
   FadeInLeft,
 } from "react-native-reanimated";
+import { Divider } from "./base/Divider";
+import { VSpace } from "./base/VSpace";
 
 const sections = [
   "Abos & Fixkosten verwalten",
@@ -21,31 +23,40 @@ interface WelcomeScreenProps {
 
 export const WelcomeScreen = ({ onFinish }: WelcomeScreenProps) => {
   return (
-    <SafeAreaView className="flex-1 p-16">
+    <SafeAreaView style={{ padding: 48 }}>
       <Animated.View entering={BounceInUp.delay(100).duration(1000)}>
-        <Text className="text-4xl font-bold">Quiet</Text>
+        <Text size="3xl" weight="bold">
+          Quiet
+        </Text>
       </Animated.View>
       <Animated.View entering={BounceInUp.delay(100).duration(1000)}>
-        <Text className="text-4xl font-bold text-accent">Costs</Text>
+        <Text size="3xl" color="primary" weight="bold">
+          Costs
+        </Text>
       </Animated.View>
+      <VSpace size={16} />
       <Animated.View entering={FadeIn.delay(1000)}>
-        <Text className="text-secondary my-8">
+        <Text size="md" color="secondary">
           Ob Zuhause, Ferienhaus oder digitales Leben Behalte wiederkehrende
           {"\n\n"}
           Kosten pro Ort und Kategorie im Blick.
         </Text>
       </Animated.View>
-
+      <VSpace size={16} />
       {sections.map((section, index) => (
         <Animated.View
           key={`section-${index}`}
           entering={FadeInLeft.delay(1500 + index * 100).duration(500)}
         >
-          <Text className="text-secondary text-sm">{section}</Text>
-          <View className="h-px w-full bg-secondary mt-4 mb-4" />
+          <Text size="sm" color="secondary">
+            {section}
+          </Text>
+          <VSpace size={4} />
+          <Divider />
         </Animated.View>
       ))}
 
+      <VSpace size={16} />
       <Animated.View entering={BounceInDown.delay(3000).duration(400)}>
         <Button title="Loslegen" onPress={onFinish} />
       </Animated.View>

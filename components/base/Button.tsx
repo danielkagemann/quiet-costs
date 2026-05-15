@@ -1,32 +1,47 @@
 import { Pressable, Text } from "react-native";
+import { Colors } from "./Colors";
 
 interface ButtonProps {
-  title: string;
+  children: string;
   onPress: () => void;
-  variant?: "primary" | "secondary" | "outline";
+  color?: "primary" | "secondary" | "outline";
 }
 
 export const Button = ({
-  title,
+  children,
   onPress,
-  variant = "primary",
+  color = "primary",
 }: ButtonProps) => {
-  const bg = {
-    primary: "bg-accent",
-    secondary: "bg-secondary",
-    outline: "bg-transparent border border-primary",
+  const colorMap: Record<string, string> = {
+    primary: Colors.primary,
+    secondary: Colors.secondary,
+    outline: "transparent",
   };
-  const fg = {
-    primary: "text-white",
-    secondary: "text-black",
-    outline: "text-primary",
-  };
+
   return (
     <Pressable
       onPress={onPress}
-      className={`${bg[variant]} flex flex-row justify-center items-center py-2 px-4 rounded-xl`}
+      style={[
+        { backgroundColor: colorMap[color] },
+        color === "outline" && { borderWidth: 1, borderColor: Colors.text },
+        {
+          padding: 8,
+          borderRadius: 12,
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      ]}
     >
-      <Text className={fg[variant]}>{title}</Text>
+      <Text
+        style={[
+          color === "primary" && { color: Colors.background },
+          color === "secondary" && { color: Colors.background },
+          color === "outline" && { color: Colors.text },
+        ]}
+      >
+        {children}
+      </Text>
     </Pressable>
   );
 };

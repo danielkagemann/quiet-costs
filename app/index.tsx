@@ -1,7 +1,7 @@
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { useEffect, useState } from "react";
 import { Storage } from "@/utils/storage";
-import { Configuration } from "@/data/configuration";
+import { Configuration } from "@/utils/configuration";
 import { OverviewScreen } from "@/components/OverviewScreen";
 
 export default function HomeScreen() {

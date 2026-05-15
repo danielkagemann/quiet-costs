@@ -1,12 +1,10 @@
-import "../global.css";
-
 import { Stack } from "expo-router";
 import { SQLiteProvider } from "expo-sqlite";
 import { StatusBar } from "expo-status-bar";
 import { Suspense } from "react";
-import { View } from "react-native";
 import { DatabaseService } from "../services/database.service";
 import { Loading } from "../components/Loading";
+import { Screen } from "@/components/base/Screen";
 
 export default function RootLayout() {
   return (
@@ -16,10 +14,10 @@ export default function RootLayout() {
         onInit={DatabaseService.initialize}
         useSuspense
       >
-        <View className="flex-1 bg-background">
+        <Screen>
           <Stack screenOptions={{ headerShown: false }} />
           <StatusBar style="light" />
-        </View>
+        </Screen>
       </SQLiteProvider>
     </Suspense>
   );

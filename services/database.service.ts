@@ -1,3 +1,5 @@
+import { Cost } from "@/types/costs";
+import { Space } from "@/types/spaces";
 import { SQLiteDatabase } from "expo-sqlite";
 
 async function initialize(db: SQLiteDatabase) {
@@ -33,4 +35,10 @@ async function initialize(db: SQLiteDatabase) {
 
 export const DatabaseService = {
   initialize,
+  getSpaces: async (db: SQLiteDatabase) => {
+    return await db.getAllAsync<Space>("SELECT * FROM space");
+  },
+  getCosts: async (db: SQLiteDatabase) => {
+    return await db.getAllAsync<Cost>("SELECT * FROM cost");
+  },
 };

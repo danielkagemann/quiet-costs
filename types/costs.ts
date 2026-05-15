@@ -6,5 +6,5 @@ export interface Cost {
   payment_method: string;
   billingCycle: "monthly" | "yearly";
   categoryId: string;
-  spaceId: string;
+  spaceId: number;
 }

@@ -1,8 +1,16 @@
-import { View, Text } from "react-native";
+import Animated, { FadeInLeft } from "react-native-reanimated";
+import { Row } from "./base/Row";
+import { Text } from "./base/Text";
 
 export const SmallHeader = () => (
-  <View className="flex flex-row items-center text-xs justify-start gap-1">
-    <Text>QUIET</Text>
-    <Text className="text-accent">COSTS</Text>
-  </View>
+  <Animated.View entering={FadeInLeft}>
+    <Row justify="start" gap={2}>
+      <Text size="sm" weight="semi-bold">
+        QUIET
+      </Text>
+      <Text size="sm" weight="semi-bold" color="primary">
+        COSTS
+      </Text>
+    </Row>
+  </Animated.View>
 );
