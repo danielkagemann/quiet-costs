@@ -15,7 +15,7 @@ interface TextProps {
 const sizeMap: Record<TextSize, number> = {
   xs: 10,
   sm: 12,
-  md: 14,
+  md: 15,
   lg: 16,
   xl: 20,
   "2xl": 24,

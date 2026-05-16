@@ -5,20 +5,28 @@ interface InputProps {
   placeholder?: string;
   value: string;
   onChange: (text: string) => void;
-  keyboardType?: "default" | "numeric" | "decimal-pad";
+  inputMode?:
+    | "text"
+    | "numeric"
+    | "email"
+    | "tel"
+    | "url"
+    | "search"
+    | "none"
+    | "decimal";
 }
 
 export const Input = ({
   placeholder,
   value,
   onChange,
-  keyboardType = "default",
+  inputMode = "text",
 }: InputProps) => {
   return (
     <TextInput
       placeholder={placeholder}
       value={value}
-      keyboardType={keyboardType}
+      inputMode={inputMode}
       onChangeText={onChange}
       style={{
         borderWidth: 1,

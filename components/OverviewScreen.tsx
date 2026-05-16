@@ -15,22 +15,24 @@ import { Row } from "./base/Row";
 import { CardSpace } from "./CardSpace";
 import { FABButton } from "./base/FABButton";
 import Animated, { FadeIn, FlipInEasyY } from "react-native-reanimated";
-import { useRouter } from "expo-router";
+import { useIsFocused, useRouter } from "expo-router";
 
 export const OverviewScreen = () => {
   // hooks
   const db = useSQLiteContext();
   const router = useRouter();
+  const isFocused = useIsFocused();
 
   // derived state
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [costs, setCosts] = useState<Cost[]>([]);
 
   useEffect(() => {
+    console.log("OverviewScreen focused, refreshing data...");
     if (!db) return;
     DatabaseService.getSpaces(db).then(setSpaces);
     DatabaseService.getCosts(db).then(setCosts);
-  }, [db]);
+  }, [db, isFocused]);
 
   /**
    * render summary
@@ -71,9 +73,9 @@ export const OverviewScreen = () => {
     return (
       <>
         <Card color="empty" padding={8} radius={12}>
-          <Row>
-            <Text size="md">{spaces.length} Spaces</Text>
-            <Text size="md">{costs.length} Kosten</Text>
+          <Row justify="between" gap={16}>
+            <Text size="sm">{costs.length} Kosten</Text>
+            <Text size="sm">{spaces.length} Spaces</Text>
           </Row>
         </Card>
         <VSpace size={8} />
@@ -112,7 +114,9 @@ export const OverviewScreen = () => {
         );
       })}
 
-      {costs.length > 0 && <FABButton onPress={() => {}} />}
+      {costs.length > 0 && (
+        <FABButton onPress={() => router.push("/cost/add")} />
+      )}
     </SafeAreaView>
   );
 };

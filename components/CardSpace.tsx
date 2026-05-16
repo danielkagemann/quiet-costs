@@ -33,7 +33,7 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
   // show more information with click options, e.g. show all costs, edit, delete, etc.
   return (
     <Card color="empty" padding={12} radius={12}>
-      <Row>
+      <Row justify="between" gap={16}>
         <View>
           <Text size="md" weight="bold">
             {name}
@@ -43,18 +43,17 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
           </Text>
         </View>
         <View>
-          <Text size="md" weight="bold">
+          <Text size="md" weight="bold" style={{ textAlign: "right" }}>
             {Intl.NumberFormat("de-DE", {
               style: "currency",
               currency: "EUR",
             }).format(total)}
           </Text>
-          <Text size="xs" color="secondary">
+          <Text size="xs" color="secondary" style={{ textAlign: "right" }}>
             monatliche Kosten
           </Text>
         </View>
       </Row>
-      <Text size="md">{name}</Text>
     </Card>
   );
 };

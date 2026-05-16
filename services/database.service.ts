@@ -41,4 +41,27 @@ export const DatabaseService = {
   getCosts: async (db: SQLiteDatabase) => {
     return await db.getAllAsync<Cost>("SELECT * FROM cost");
   },
+  createCost: async (db: SQLiteDatabase, cost: Cost) => {
+    const {
+      name,
+      amount,
+      start_date,
+      payment_method,
+      billingCycle,
+      categoryId,
+      spaceId,
+    } = cost;
+    await db.runAsync(
+      "INSERT INTO cost (name, amount, start_date, payment_method, billingCycle, categoryId, spaceId) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [
+        name,
+        amount,
+        start_date.toISOString(),
+        payment_method,
+        billingCycle,
+        categoryId,
+        spaceId,
+      ],
+    );
+  },
 };

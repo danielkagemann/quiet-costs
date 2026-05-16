@@ -4,6 +4,7 @@ import { Space } from "@/types/spaces";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { Text } from "@/components/base/Text";
 import { Input } from "@/components/base/Input";
@@ -12,6 +13,7 @@ import { Row } from "@/components/base/Row";
 import { Button } from "@/components/base/Button";
 import { Card } from "@/components/base/Card";
 import { Configuration } from "@/utils/configuration";
+import { Colors } from "@/components/base/Colors";
 
 export default function AddCostScreen() {
   // hooks
@@ -20,6 +22,7 @@ export default function AddCostScreen() {
 
   // states
   const [spaces, setSpaces] = useState<Space[]>([]);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [cost, setCost] = useState<Cost>({
     id: 0,
     name: "",
@@ -36,6 +39,8 @@ export default function AddCostScreen() {
     if (!db) return;
     DatabaseService.getSpaces(db).then((list) => {
       setSpaces(list);
+      // pre-select the first space if available
+      if (list.length > 0) setCost((c) => ({ ...c, spaceId: list[0].id }));
     });
   }, [db]);
 
@@ -88,6 +93,39 @@ export default function AddCostScreen() {
     );
   }
 
+  /**
+   * chips for spaces
+   * @param items
+   * @returns
+   */
+  function spaceChips(items: Space[]) {
+    return (
+      <Row justify="start" gap={4} wrap>
+        {items.map((space) => (
+          <Button
+            size="sm"
+            key={space.id}
+            color={cost.spaceId === space.id ? "primary" : "light"}
+            onPress={() => setCost({ ...cost, spaceId: space.id })}
+          >
+            {space.name}
+          </Button>
+        ))}
+      </Row>
+    );
+  }
+
+  /**
+   * save cost to database
+   * @returns
+   */
+  function onSave() {
+    if (!db) return;
+    DatabaseService.createCost(db, cost).then(() => {
+      router.back();
+    });
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -95,14 +133,19 @@ export default function AddCostScreen() {
         style={{ flex: 1 }}
       >
         {/*header*/}
-        <View style={{ padding: 16 }}>
+        <View style={{ paddingHorizontal: 16 }}>
           <Row justify="start" gap={8}>
             <Button color="empty" onPress={() => router.back()}>
               &larr;
             </Button>
-            <Text size="md" weight="bold">
-              Neuer Kostenpunkt
-            </Text>
+            <View>
+              <Text size="md" weight="bold">
+                Neuer Kostenpunkt
+              </Text>
+              <Text size="xs" color="secondary">
+                Wiederkehrende Kosten hinzufügen
+              </Text>
+            </View>
           </Row>
         </View>
 
@@ -122,13 +165,46 @@ export default function AddCostScreen() {
 
             <Input
               placeholder="0.00"
-              keyboardType="decimal-pad"
+              inputMode="decimal"
               value={cost.amount.toString()}
               onChange={(text) =>
                 setCost({ ...cost, amount: Number.parseFloat(text) || 0 })
               }
             />
+          </Card>
 
+          {/* date & payment method */}
+          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
+            {title("Zahlungsmethode")}
+            {description(
+              "Hier kannst Du die Zahlungsmethode für Deine Ausgabe auswählen.",
+            )}
+            {chips(Configuration.payment, "payment_method")}
+
+            <Row gap={4} justify="between">
+              <Text size="md">Startdatum</Text>
+
+              <Button
+                color="light"
+                onPress={() => setShowDatePicker((p) => !p)}
+                size="md"
+              >
+                {`${Intl.DateTimeFormat("de-DE", { dateStyle: "medium" }).format(cost.start_date)}`}
+              </Button>
+            </Row>
+            {showDatePicker && (
+              <DateTimePicker
+                value={cost.start_date}
+                mode="date"
+                locale="de-DE"
+                accentColor={Colors.primary}
+                display="spinner"
+                onChange={(_, date) => {
+                  setShowDatePicker(false);
+                  if (date) setCost({ ...cost, start_date: date });
+                }}
+              />
+            )}
             <Row gap={4} justify="start">
               {["monthly", "yearly"].map((cycle) => (
                 <Button
@@ -148,15 +224,6 @@ export default function AddCostScreen() {
             </Row>
           </Card>
 
-          {/* date & payment method */}
-          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            {title("Zahlungsmethode")}
-            {description(
-              "Hier kannst Du die Zahlungsmethode für Deine Ausgabe auswählen.",
-            )}
-            {chips(Configuration.payment, "payment_method")}
-          </Card>
-
           {/* categories */}
           <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
             {title("Kategorie auswählen")}
@@ -173,19 +240,12 @@ export default function AddCostScreen() {
               "Ordne Deine Ausgabe einem Space zu, um sie besser zu organisieren und zuordnen zu können.",
             )}
 
-            <Row justify="start" gap={4} wrap>
-              {spaces.map((space) => (
-                <Button
-                  size="sm"
-                  key={space.id}
-                  color={cost.spaceId === space.id ? "primary" : "light"}
-                  onPress={() => setCost({ ...cost, spaceId: space.id })}
-                >
-                  {space.name}
-                </Button>
-              ))}
-            </Row>
+            {spaceChips(spaces)}
           </Card>
+
+          <Button color="primary" size="lg" onPress={onSave}>
+            Speichern
+          </Button>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
