@@ -1,3 +1,4 @@
+import { CostService } from "@/services/cost.service";
 import { Card } from "./base/Card";
 import { Text } from "./base/Text";
 import { VSpace } from "./base/VSpace";
@@ -13,10 +14,7 @@ export const CardMonthlyCosts = ({ total }: CardMonthlyCostsProps) => {
       </Text>
       <VSpace size={8} />
       <Text size="2xl" weight="bold">
-        {Intl.NumberFormat("de-DE", {
-          style: "currency",
-          currency: "EUR",
-        }).format(total)}
+        {CostService.formatAmount(total)}
       </Text>
       <VSpace size={2} />
       <Text size="sm">monatliche Kosten</Text>

@@ -41,6 +41,11 @@ export const DatabaseService = {
   getCosts: async (db: SQLiteDatabase) => {
     return await db.getAllAsync<Cost>("SELECT * FROM cost");
   },
+  getCostsForSpace: async (db: SQLiteDatabase, spaceId: number) => {
+    return await db.getAllAsync<Cost>("SELECT * FROM cost WHERE spaceId = ?", [
+      spaceId,
+    ]);
+  },
   createCost: async (db: SQLiteDatabase, cost: Cost) => {
     const {
       name,
@@ -62,6 +67,20 @@ export const DatabaseService = {
         categoryId,
         spaceId,
       ],
+    );
+  },
+  addSpace: async (db: SQLiteDatabase, space: Space) => {
+    const { name, description } = space;
+    await db.runAsync(
+      "INSERT INTO space (name, description) VALUES (?, ?)",
+      name,
+      description,
+    );
+  },
+  getSpaceById: async (db: SQLiteDatabase, id: number) => {
+    return await db.getFirstAsync<Space>(
+      "SELECT * FROM space WHERE id = ?",
+      id,
     );
   },
 };

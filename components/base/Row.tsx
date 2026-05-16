@@ -1,10 +1,11 @@
-import { View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 
 interface RowProps {
   gap?: number;
   wrap?: boolean;
   justify?: "start" | "center" | "end" | "between";
   children: React.ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const Row = ({
@@ -12,6 +13,7 @@ export const Row = ({
   wrap = false,
   justify = "start",
   children,
+  style,
 }: RowProps) => {
   const justifyContentMap: Record<
     string,
@@ -25,13 +27,16 @@ export const Row = ({
 
   return (
     <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        flexWrap: wrap ? "wrap" : "nowrap",
-        gap,
-        justifyContent: justifyContentMap[justify] ?? "flex-start",
-      }}
+      style={[
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          flexWrap: wrap ? "wrap" : "nowrap",
+          gap,
+          justifyContent: justifyContentMap[justify] ?? "flex-start",
+        },
+        style,
+      ]}
     >
       {children}
     </View>

@@ -4,6 +4,7 @@ import { Text } from "./base/Text";
 import { VSpace } from "./base/VSpace";
 import { Row } from "./base/Row";
 import { View } from "react-native";
+import { CostService } from "@/services/cost.service";
 
 interface CardSpaceProps {
   name: string;
@@ -21,14 +22,14 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
         <Text color="text">Noch keine laufenden Kosten.</Text>
         <VSpace size={4} />
         <Text color="secondary">
-          Hier siehst Du monatliche Gesamtbelastung Kosten pro Space jährliche
-          Verpflichtungen
+          Hier siehst Du monatliche Gesamtbelastung, Kosten pro Space und
+          jährliche Verpflichtungen
         </Text>
       </Card>
     );
   }
 
-  const total = costs.reduce((sum, cost) => sum + cost.amount, 0);
+  const total = CostService.getTotalPerMonth(costs);
 
   // show more information with click options, e.g. show all costs, edit, delete, etc.
   return (
@@ -44,10 +45,7 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
         </View>
         <View>
           <Text size="md" weight="bold" style={{ textAlign: "right" }}>
-            {Intl.NumberFormat("de-DE", {
-              style: "currency",
-              currency: "EUR",
-            }).format(total)}
+            {CostService.formatAmount(total)}
           </Text>
           <Text size="xs" color="secondary" style={{ textAlign: "right" }}>
             monatliche Kosten

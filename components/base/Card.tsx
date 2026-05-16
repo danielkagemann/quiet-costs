@@ -1,5 +1,6 @@
 import { StyleProp, View, ViewStyle } from "react-native";
 import { Colors } from "./Colors";
+import { Text } from "./Text";
 
 interface CardProps {
   color: "primary" | "secondary" | "empty";
@@ -38,3 +39,24 @@ export const Card = ({
     </View>
   );
 };
+
+export function CardTitle({ children }: Readonly<{ children: string }>) {
+  return (
+    <Text size="sm" color="primary" weight="semi-bold">
+      {children}
+    </Text>
+  );
+}
+
+/**
+ * render description text
+ * @param val
+ * @returns
+ */
+export function CardDescription({ children }: Readonly<{ children: string }>) {
+  return (
+    <Text size="xs" color="secondary">
+      {children}
+    </Text>
+  );
+}

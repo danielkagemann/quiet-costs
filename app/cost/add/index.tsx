@@ -11,9 +11,11 @@ import { Input } from "@/components/base/Input";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Row } from "@/components/base/Row";
 import { Button } from "@/components/base/Button";
-import { Card } from "@/components/base/Card";
+import { Card, CardDescription, CardTitle } from "@/components/base/Card";
 import { Configuration } from "@/utils/configuration";
 import { Colors } from "@/components/base/Colors";
+import { TopNavigation } from "@/components/TopNavigation";
+import { CostService } from "@/services/cost.service";
 
 export default function AddCostScreen() {
   // hooks
@@ -43,32 +45,6 @@ export default function AddCostScreen() {
       if (list.length > 0) setCost((c) => ({ ...c, spaceId: list[0].id }));
     });
   }, [db]);
-
-  /**
-   * render title
-   * @param val
-   * @returns
-   */
-  function title(val: string) {
-    return (
-      <Text size="sm" color="primary" weight="semi-bold">
-        {val}
-      </Text>
-    );
-  }
-
-  /**
-   * render description text
-   * @param val
-   * @returns
-   */
-  function description(val: string) {
-    return (
-      <Text size="xs" color="secondary">
-        {val}
-      </Text>
-    );
-  }
 
   /**
    * render chips
@@ -133,36 +109,25 @@ export default function AddCostScreen() {
         style={{ flex: 1 }}
       >
         {/*header*/}
-        <View style={{ paddingHorizontal: 16 }}>
-          <Row justify="start" gap={8}>
-            <Button color="empty" onPress={() => router.back()}>
-              &larr;
-            </Button>
-            <View>
-              <Text size="md" weight="bold">
-                Neuer Kostenpunkt
-              </Text>
-              <Text size="xs" color="secondary">
-                Wiederkehrende Kosten hinzufügen
-              </Text>
-            </View>
-          </Row>
-        </View>
+        <TopNavigation
+          title="Neuer Kostenpunkt"
+          sub="Wiederkehrende Kosten hinzufügen"
+        />
 
         <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
           {/* Name & amount & billing */}
           <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            {title("Allgemein")}
-            {description(
-              "Hier kannst Du allgemeine Informationen zu Deiner Ausgabe eingeben.",
-            )}
+            <CardTitle>Allgemein</CardTitle>
+            <CardDescription>
+              Hier kannst Du allgemeine Informationen zu Deiner Ausgabe
+              eingeben.
+            </CardDescription>
 
             <Input
               placeholder="e.g. Netflix"
               value={cost.name}
               onChange={(text) => setCost({ ...cost, name: text })}
             />
-
             <Input
               placeholder="0.00"
               inputMode="decimal"
@@ -175,10 +140,10 @@ export default function AddCostScreen() {
 
           {/* date & payment method */}
           <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            {title("Zahlungsmethode")}
-            {description(
-              "Hier kannst Du die Zahlungsmethode für Deine Ausgabe auswählen.",
-            )}
+            <CardTitle>Zahlungsmethode</CardTitle>
+            <CardDescription>
+              Hier kannst Du die Zahlungsmethode für Deine Ausgabe auswählen.
+            </CardDescription>
             {chips(Configuration.payment, "payment_method")}
 
             <Row gap={4} justify="between">
@@ -226,26 +191,35 @@ export default function AddCostScreen() {
 
           {/* categories */}
           <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            {title("Kategorie auswählen")}
-            {description(
-              "Wähle die Kategorie aus, die am besten zu Deiner Ausgabe passt. So behältst Du immer den Überblick.",
-            )}
+            <CardTitle>Kategorie auswählen</CardTitle>
+            <CardDescription>
+              Wähle die Kategorie aus, die am besten zu Deiner Ausgabe passt. So
+              behältst Du immer den Überblick.
+            </CardDescription>
             {chips(Configuration.categories, "categoryId")}
           </Card>
 
           {/* spaces */}
           <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            {title("Space auswählen")}
-            {description(
-              "Ordne Deine Ausgabe einem Space zu, um sie besser zu organisieren und zuordnen zu können.",
-            )}
+            <CardTitle>Space auswählen</CardTitle>
+            <CardDescription>
+              Ordne Deine Ausgabe einem Space zu, um sie besser zu organisieren
+              und zuordnen zu können.
+            </CardDescription>
 
             {spaceChips(spaces)}
           </Card>
 
-          <Button color="primary" size="lg" onPress={onSave}>
-            Speichern
-          </Button>
+          {/* save button */}
+          {CostService.isValid(cost) ? (
+            <Button color="primary" size="lg" onPress={onSave}>
+              Speichern
+            </Button>
+          ) : (
+            <Text size="sm" color="secondary">
+              Bitte fülle alle Pflichtfelder aus, um fortzufahren.
+            </Text>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

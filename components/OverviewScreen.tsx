@@ -16,6 +16,7 @@ import { CardSpace } from "./CardSpace";
 import { FABButton } from "./base/FABButton";
 import Animated, { FadeIn, FlipInEasyY } from "react-native-reanimated";
 import { useIsFocused, useRouter } from "expo-router";
+import { Pressable, ScrollView } from "react-native";
 
 export const OverviewScreen = () => {
   // hooks
@@ -28,7 +29,6 @@ export const OverviewScreen = () => {
   const [costs, setCosts] = useState<Cost[]>([]);
 
   useEffect(() => {
-    console.log("OverviewScreen focused, refreshing data...");
     if (!db) return;
     DatabaseService.getSpaces(db).then(setSpaces);
     DatabaseService.getCosts(db).then(setCosts);
@@ -88,8 +88,6 @@ export const OverviewScreen = () => {
     <SafeAreaView style={{ flex: 1, padding: 16 }}>
       <SmallHeader />
 
-      <VSpace size={16} />
-
       {renderSummary()}
 
       <VSpace size={16} />
@@ -98,22 +96,28 @@ export const OverviewScreen = () => {
         <Text size="md" color="secondary" weight="bold">
           SPACES
         </Text>
-        <Button color="secondary" onPress={() => {}}>
+        <Button color="secondary" onPress={() => router.push("/space/add")}>
           +
         </Button>
       </Row>
 
       <VSpace size={4} />
 
-      {spaces.map((space: Space) => {
-        const spaceCosts = costs.filter(
-          (cost: Cost) => cost.spaceId === space.id,
-        );
-        return (
-          <CardSpace key={space.id} name={space.name} costs={spaceCosts} />
-        );
-      })}
-
+      <ScrollView contentContainerStyle={{ gap: 8, flex: 1 }}>
+        {spaces.map((space: Space) => {
+          const spaceCosts = costs.filter(
+            (cost: Cost) => cost.spaceId === space.id,
+          );
+          return (
+            <Pressable
+              key={space.id}
+              onPress={() => router.push(`/space/${space.id}`)}
+            >
+              <CardSpace name={space.name} costs={spaceCosts} />
+            </Pressable>
+          );
+        })}
+      </ScrollView>
       {costs.length > 0 && (
         <FABButton onPress={() => router.push("/cost/add")} />
       )}
