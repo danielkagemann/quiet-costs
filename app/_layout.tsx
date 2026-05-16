@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { Suspense } from "react";
 import { DatabaseService } from "../services/database.service";
 import { Loading } from "../components/Loading";
-import { Screen } from "@/components/base/Screen";
+import { Colors } from "@/components/base/Colors";
 
 export default function RootLayout() {
   return (
@@ -14,10 +14,13 @@ export default function RootLayout() {
         onInit={DatabaseService.initialize}
         useSuspense
       >
-        <Screen>
-          <Stack screenOptions={{ headerShown: false }} />
-          <StatusBar style="light" />
-        </Screen>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: Colors.background },
+          }}
+        />
+        <StatusBar style="light" />
       </SQLiteProvider>
     </Suspense>
   );

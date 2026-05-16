@@ -4,18 +4,30 @@ import { Colors } from "./Colors";
 interface ButtonProps {
   children: string;
   onPress: () => void;
-  color?: "primary" | "secondary" | "outline";
+  color?: "primary" | "secondary" | "light" | "outline" | "empty";
+  size?: "sm" | "md" | "lg";
+  radius?: "sm" | "md" | "lg";
 }
 
 export const Button = ({
   children,
   onPress,
   color = "primary",
+  size = "md",
+  radius = "md",
 }: ButtonProps) => {
   const colorMap: Record<string, string> = {
     primary: Colors.primary,
     secondary: Colors.secondary,
     outline: "transparent",
+    empty: "transparent",
+    light: Colors.ternary,
+  };
+
+  const sizeMap: Record<string, number> = {
+    sm: 4,
+    md: 8,
+    lg: 12,
   };
 
   return (
@@ -25,8 +37,9 @@ export const Button = ({
         { backgroundColor: colorMap[color] },
         color === "outline" && { borderWidth: 1, borderColor: Colors.text },
         {
-          padding: 8,
-          borderRadius: 12,
+          paddingVertical: sizeMap[size],
+          paddingHorizontal: sizeMap[size] + 2,
+          borderRadius: sizeMap[radius],
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
@@ -38,6 +51,11 @@ export const Button = ({
           color === "primary" && { color: Colors.background },
           color === "secondary" && { color: Colors.background },
           color === "outline" && { color: Colors.text },
+          color === "empty" && { color: Colors.text },
+          size === "sm" && { fontSize: 11 },
+          size === "md" && { fontSize: 13 },
+          size === "lg" && { fontSize: 15 },
+          { fontWeight: "400" },
         ]}
       >
         {children}

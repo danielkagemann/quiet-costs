@@ -16,7 +16,7 @@ async function initialize(db: SQLiteDatabase) {
         id             INTEGER PRIMARY KEY AUTOINCREMENT,
         name           TEXT    NOT NULL,
         amount         REAL    NOT NULL,
-        start_date     TEXT    NOT NULL,
+        start_date     DATE    NOT NULL,
         payment_method INTEGER NOT NULL DEFAULT 0,
         billingCycle   TEXT    NOT NULL DEFAULT 'monthly',
         categoryId     INTEGER    NOT NULL DEFAULT 0,

@@ -1,10 +1,10 @@
 import { View } from "react-native";
-import { Colors } from "./Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function Screen({ children }: Readonly<React.PropsWithChildren<{}>>) {
   return (
-    <View style={{ flex: 1, backgroundColor: Colors.background }}>
-      {children}
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>{children}</View>
+    </SafeAreaView>
   );
 }

@@ -2,9 +2,9 @@ export interface Cost {
   id: number;
   name: string;
   amount: number;
-  start_date: string;
-  payment_method: string;
+  start_date: Date;
+  payment_method: number;
   billingCycle: "monthly" | "yearly";
-  categoryId: string;
+  categoryId: number;
   spaceId: number;
 }

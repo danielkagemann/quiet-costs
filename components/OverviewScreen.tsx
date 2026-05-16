@@ -15,12 +15,12 @@ import { Row } from "./base/Row";
 import { CardSpace } from "./CardSpace";
 import { FABButton } from "./base/FABButton";
 import Animated, { FadeIn, FlipInEasyY } from "react-native-reanimated";
-import { IconButton } from "./base/IconButton";
-import { Pressable } from "react-native";
+import { useRouter } from "expo-router";
 
 export const OverviewScreen = () => {
   // hooks
   const db = useSQLiteContext();
+  const router = useRouter();
 
   // derived state
   const [spaces, setSpaces] = useState<Space[]>([]);
@@ -59,7 +59,7 @@ export const OverviewScreen = () => {
           <VSpace size={4} />
 
           <Animated.View entering={FadeIn.delay(600)}>
-            <Button color="primary" onPress={() => {}}>
+            <Button color="primary" onPress={() => router.push("/cost/add")}>
               Erste Kosten hinzufügen
             </Button>
           </Animated.View>

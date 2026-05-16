@@ -86,26 +86,9 @@ export default function AddScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
-        <View className="gap-1">
-          <Text className="text-gray-600 text-sm font-medium">Name</Text>
-          <TextInput
-            className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-800"
-            placeholder="e.g. Netflix"
-            value={name}
-            onChangeText={setName}
-          />
-        </View>
+       
 
-        <View className="gap-1">
-          <Text className="text-gray-600 text-sm font-medium">Amount ($)</Text>
-          <TextInput
-            className="bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-800"
-            placeholder="0.00"
-            keyboardType="decimal-pad"
-            value={amount}
-            onChangeText={setAmount}
-          />
-        </View>
+        
 
         <View className="gap-1">
           <Text className="text-gray-600 text-sm font-medium">Start Date</Text>
@@ -129,58 +112,9 @@ export default function AddScreen() {
           />
         </View>
 
-        <View className="gap-1">
-          <Text className="text-gray-600 text-sm font-medium">
-            Billing Cycle
-          </Text>
-          <View className="flex-row gap-3">
-            {(["monthly", "yearly"] as const).map((c) => (
-              <Pressable
-                key={c}
-                onPress={() => setCycle(c)}
-                className={`flex-1 rounded-xl py-3 items-center border ${
-                  cycle === c
-                    ? "bg-blue-700 border-blue-700"
-                    : "bg-white border-gray-200"
-                }`}
-              >
-                <Text
-                  className={`font-medium capitalize ${
-                    cycle === c ? "text-white" : "text-gray-600"
-                  }`}
-                >
-                  {c}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
+        
 
-        <View className="gap-1">
-          <Text className="text-gray-600 text-sm font-medium">Category</Text>
-          <View className="flex-row flex-wrap gap-2">
-            {CATEGORIES.map((cat) => (
-              <Pressable
-                key={cat}
-                onPress={() => setCategory(cat)}
-                className={`rounded-full px-4 py-2 border ${
-                  category === cat
-                    ? "bg-blue-700 border-blue-700"
-                    : "bg-white border-gray-200"
-                }`}
-              >
-                <Text
-                  className={`text-sm ${
-                    category === cat ? "text-white" : "text-gray-600"
-                  }`}
-                >
-                  {cat}
-                </Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-
+        
         {spaces.length > 0 && (
           <View className="gap-1">
             <Text className="text-gray-600 text-sm font-medium">Space</Text>
