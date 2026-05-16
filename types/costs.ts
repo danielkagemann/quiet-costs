@@ -2,9 +2,8 @@ export interface Cost {
   id: number;
   name: string;
   amount: number;
-  start_date: Date;
-  payment_method: number;
-  billingCycle: "monthly" | "yearly";
+  billingCycle: "monthly" | "quarterly" | "half_yearly" | "yearly";
+  isActive: boolean;
   categoryId: number;
   spaceId: number;
 }

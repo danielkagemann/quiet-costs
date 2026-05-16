@@ -31,6 +31,8 @@ export default function SpaceAddScreen() {
     });
   }
 
+  // TODO add image
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -58,7 +60,7 @@ export default function SpaceAddScreen() {
             />
             <Input
               placeholder="Beschreibung (optional)"
-              value={space.description}
+              value={space.description ?? ""}
               onChange={(text) => setSpace({ ...space, description: text })}
             />
           </Card>

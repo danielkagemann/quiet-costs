@@ -8,10 +8,12 @@ import { Space } from "@/types/spaces";
 import { useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { Fragment, useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
+import { Colors } from "@/components/base/Colors";
+import { CardCategory } from "@/components/CardCategory";
 
 export default function SpaceDetails() {
   // hooks
@@ -45,22 +47,32 @@ export default function SpaceDetails() {
       />
       <VSpace size={16} />
 
-      <ScrollView style={{ flex: 1 }}>
-        {Object.keys(groupedCosts).map((category: string) => (
-          <Fragment key={category}>
-            <Card color="empty">
-              <CardTitle>{category}</CardTitle>
-              <VSpace size={8} />
-              {groupedCosts[category].map((cost) => (
-                <Row key={cost.id} justify="between">
-                  <Text size="md">{cost.name}</Text>
-                  <Text size="md">{CostService.formatAmount(cost.amount)}</Text>
-                </Row>
-              ))}
-            </Card>
-            <VSpace size={2} />
-          </Fragment>
-        ))}
+      {/* overview card */}
+      <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
+        <Text size="sm" color="secondary">
+          MONATLICHE KOSTEN
+        </Text>
+        <Text size="2xl" weight="bold">
+          {CostService.formatAmount(CostService.getTotalPerMonth(costs))}
+        </Text>
+        <Text size="xs" color="secondary">
+          Alle Kosten werden auf einen monatlichen Betrag umgerechnet, um die
+          Übersicht zu erleichtern.
+        </Text>
+      </Card>
+
+      <ScrollView
+        style={{ flex: 1, flexDirection: "column", gap: 12, paddingTop: 16 }}
+      >
+        <View style={{ gap: 8 }}>
+          {Object.keys(groupedCosts).map((category: string) => (
+            <CardCategory
+              key={category}
+              categoryId={Number(category)}
+              costs={groupedCosts[category]}
+            />
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

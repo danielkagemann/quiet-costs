@@ -27,11 +27,7 @@
       "output": "static",
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-router",
-      "expo-sqlite",
-      "@react-native-community/datetimepicker"
-    ],
+    "plugins": ["expo-router", "expo-sqlite"],
     "scheme": "quiet-costs",
     "experiments": {
       "typedRoutes": true

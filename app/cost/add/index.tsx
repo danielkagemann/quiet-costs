@@ -4,8 +4,7 @@ import { Space } from "@/types/spaces";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { Text } from "@/components/base/Text";
 import { Input } from "@/components/base/Input";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +12,6 @@ import { Row } from "@/components/base/Row";
 import { Button } from "@/components/base/Button";
 import { Card, CardDescription, CardTitle } from "@/components/base/Card";
 import { Configuration } from "@/utils/configuration";
-import { Colors } from "@/components/base/Colors";
 import { TopNavigation } from "@/components/TopNavigation";
 import { CostService } from "@/services/cost.service";
 
@@ -24,14 +22,13 @@ export default function AddCostScreen() {
 
   // states
   const [spaces, setSpaces] = useState<Space[]>([]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [amountInput, setAmountInput] = useState("");
   const [cost, setCost] = useState<Cost>({
     id: 0,
     name: "",
     amount: 0,
-    start_date: new Date(),
-    payment_method: 0,
     billingCycle: "monthly",
+    isActive: true,
     categoryId: 0,
     spaceId: 0,
   });
@@ -131,61 +128,47 @@ export default function AddCostScreen() {
             <Input
               placeholder="0.00"
               inputMode="decimal"
-              value={cost.amount.toString()}
-              onChange={(text) =>
-                setCost({ ...cost, amount: Number.parseFloat(text) || 0 })
-              }
+              value={amountInput}
+              onChange={(text) => {
+                // replace comma with dot, strip everything except digits and one dot
+                const normalized = text.replace(",", ".");
+                const sanitized = normalized
+                  .replace(/[^0-9.]/g, "")
+                  .replace(/^(\d*\.?\d*).*$/, "$1");
+                setAmountInput(sanitized);
+                setCost({ ...cost, amount: Number.parseFloat(sanitized) || 0 });
+              }}
             />
           </Card>
 
-          {/* date & payment method */}
+          {/* billing cycle */}
           <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            <CardTitle>Zahlungsmethode</CardTitle>
+            <CardTitle>Abrechnungszeitraum</CardTitle>
             <CardDescription>
-              Hier kannst Du die Zahlungsmethode für Deine Ausgabe auswählen.
+              Wähle aus, ob die Ausgabe monatlich, vierteljährlich oder jährlich
+              abgerechnet wird.
             </CardDescription>
-            {chips(Configuration.payment, "payment_method")}
-
-            <Row gap={4} justify="between">
-              <Text size="md">Startdatum</Text>
-
-              <Button
-                color="light"
-                onPress={() => setShowDatePicker((p) => !p)}
-                size="md"
-              >
-                {`${Intl.DateTimeFormat("de-DE", { dateStyle: "medium" }).format(cost.start_date)}`}
-              </Button>
-            </Row>
-            {showDatePicker && (
-              <DateTimePicker
-                value={cost.start_date}
-                mode="date"
-                locale="de-DE"
-                accentColor={Colors.primary}
-                display="spinner"
-                onChange={(_, date) => {
-                  setShowDatePicker(false);
-                  if (date) setCost({ ...cost, start_date: date });
-                }}
-              />
-            )}
             <Row gap={4} justify="start">
-              {["monthly", "yearly"].map((cycle) => (
-                <Button
-                  size="sm"
-                  key={cycle}
-                  color={cost.billingCycle === cycle ? "primary" : "secondary"}
-                  onPress={() =>
-                    setCost({
-                      ...cost,
-                      billingCycle: cycle as "monthly" | "yearly",
-                    })
-                  }
-                >
-                  {cycle === "monthly" ? "Monatlich" : "Jährlich"}
-                </Button>
-              ))}
+              {(["monthly", "quarterly", "half_yearly", "yearly"] as const).map(
+                (cycle) => (
+                  <Button
+                    size="sm"
+                    key={cycle}
+                    color={
+                      cost.billingCycle === cycle ? "primary" : "secondary"
+                    }
+                    onPress={() => setCost({ ...cost, billingCycle: cycle })}
+                  >
+                    {cycle === "monthly"
+                      ? "Monatlich"
+                      : cycle === "quarterly"
+                        ? "Vierteljährlich"
+                        : cycle === "half_yearly"
+                          ? "Halbjährlich"
+                          : "Jährlich"}
+                  </Button>
+                ),
+              )}
             </Row>
           </Card>
 

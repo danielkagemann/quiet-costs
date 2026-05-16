@@ -1,21 +1,43 @@
 import { Cost } from "@/types/costs";
-import { Configuration } from "@/utils/configuration";
 
 export const CostService = {
   getTotalPerMonth: (costs: Cost[]) => {
     return costs.reduce((total, cost) => {
-      const amount =
-        cost.billingCycle === "monthly" ? cost.amount : cost.amount / 12;
-      return total + amount;
+      if (!cost.isActive) return total; // ignore inactive costs
+      return total + CostService.getAmount(cost);
     }, 0);
   },
 
   isValid(cost: Cost) {
-    return (
-      cost.name.trim() !== "" &&
-      cost.amount > 0 &&
-      cost.start_date instanceof Date
-    );
+    return cost.name.trim() !== "" && cost.amount > 0;
+  },
+
+  getBillingCycle(cost: Cost) {
+    switch (cost.billingCycle) {
+      case "monthly":
+        return "Monatlich";
+      case "quarterly":
+        return "Vierteljährlich";
+      case "half_yearly":
+        return "Halbjährlich";
+      case "yearly":
+        return "Jährlich";
+      default:
+        return "Unbekannt";
+    }
+  },
+
+  getAmount(cost: Cost) {
+    if (cost.billingCycle === "monthly") {
+      return cost.amount;
+    } else if (cost.billingCycle === "quarterly") {
+      return cost.amount / 3;
+    } else if (cost.billingCycle === "half_yearly") {
+      return cost.amount / 6;
+    } else if (cost.billingCycle === "yearly") {
+      return cost.amount / 12;
+    }
+    return cost.amount; // fallback, should not happen
   },
 
   formatAmount(amount: number) {
@@ -28,8 +50,7 @@ export const CostService = {
   groupCostsByCategory(costs: Cost[]): Record<string, Cost[]> {
     return costs.reduce(
       (groups, cost) => {
-        const category =
-          Configuration.categories[cost.categoryId] ?? "Uncategorized";
+        const category = cost.categoryId ?? "Uncategorized";
         if (!groups[category]) {
           groups[category] = [];
         }

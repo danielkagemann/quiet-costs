@@ -58,7 +58,9 @@ export const WelcomeScreen = ({ onFinish }: WelcomeScreenProps) => {
 
       <VSpace size={16} />
       <Animated.View entering={BounceInDown.delay(3000).duration(400)}>
-        <Button title="Loslegen" onPress={onFinish} />
+        <Button onPress={onFinish} size="lg" color="primary">
+          Loslegen
+        </Button>
       </Animated.View>
     </SafeAreaView>
   );

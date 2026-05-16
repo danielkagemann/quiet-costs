@@ -14,13 +14,4 @@ export const Configuration = {
     "Mitgliedschaften",
     "Sonstiges",
   ],
-  payment: [
-    "Kreditkarte",
-    "Lastschrift",
-    "Banküberweisung",
-    "PayPal",
-    "Mobile Payment",
-    "Bargeld",
-    "Sonstiges",
-  ],
 };
