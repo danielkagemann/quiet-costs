@@ -5,8 +5,9 @@ import { Text } from "./base/Text";
 import { Configuration } from "@/utils/configuration";
 import { CostService } from "@/services/cost.service";
 import { Pressable, View } from "react-native";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { Colors } from "./base/Colors";
+import { ChevronDown, ChevronRight, ChevronUp } from "lucide-react-native";
 
 interface CardCategoryProps {
   categoryId: number;
@@ -37,19 +38,25 @@ export const CardCategory = ({ categoryId, costs }: CardCategoryProps) => {
                 <Text size="sm" color="secondary">
                   {cost.name}
                 </Text>
+
                 <View
                   style={{
                     backgroundColor: Colors.border,
-                    paddingHorizontal: 8,
-                    paddingVertical: 4,
+                    paddingHorizontal: 4,
+                    paddingVertical: 2,
                     borderRadius: 4,
                   }}
                 >
-                  <Text size="xs">{CostService.getBillingCycle(cost)}</Text>
+                  <Text size="xs" color="secondary">
+                    {CostService.getBillingCycle(cost)}
+                  </Text>
                 </View>
-                <Text size="sm" color="secondary">
-                  {CostService.formatAmount(CostService.getAmount(cost))}
-                </Text>
+                <Row gap={4}>
+                  <Text size="sm" color="secondary">
+                    {CostService.formatAmount(CostService.getAmount(cost))}
+                  </Text>
+                  <ChevronRight size={16} color={Colors.secondary} />
+                </Row>
               </Row>
               {index < costs.length - 1 && (
                 <View
@@ -74,13 +81,20 @@ export const CardCategory = ({ categoryId, costs }: CardCategoryProps) => {
           <Text size="md" weight="bold">
             {Configuration.categories[categoryId]}
           </Text>
-          <Text size="md" color="primary" weight="bold">
-            {CostService.formatAmount(
-              CostService.getTotalPerMonth(
-                costs.filter((c) => c.categoryId === categoryId),
-              ),
+          <Row gap={4}>
+            <Text size="md" color="primary" weight="bold">
+              {CostService.formatAmount(
+                CostService.getTotalPerMonth(
+                  costs.filter((c) => c.categoryId === categoryId),
+                ),
+              )}
+            </Text>
+            {isExpanded ? (
+              <ChevronUp size={20} color={Colors.text} />
+            ) : (
+              <ChevronRight size={20} color={Colors.text} />
             )}
-          </Text>
+          </Row>
         </Row>
       </Pressable>
       {renderList()}

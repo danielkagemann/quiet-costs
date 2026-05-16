@@ -29,8 +29,8 @@ export const Card = ({
           backgroundColor: bgColorMap[color],
           padding,
           borderRadius: radius,
-          borderWidth: color === "empty" ? 1 : 0,
-          borderColor: Colors.border,
+          borderWidth: ["empty", "primary"].includes(color) ? 1 : 0,
+          borderColor: color === "primary" ? Colors.ternary : Colors.border,
         },
         style,
       ]}

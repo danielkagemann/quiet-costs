@@ -17,6 +17,8 @@ import { FABButton } from "./base/FABButton";
 import Animated, { FadeIn, FlipInEasyY } from "react-native-reanimated";
 import { useIsFocused, useRouter } from "expo-router";
 import { Pressable, ScrollView } from "react-native";
+import { House, Rows3 } from "lucide-react-native";
+import { Colors } from "./base/Colors";
 
 export const OverviewScreen = () => {
   // hooks
@@ -72,10 +74,16 @@ export const OverviewScreen = () => {
     // we have costs, show the summary card
     return (
       <>
-        <Card color="empty" padding={8} radius={12}>
+        <Card color="empty" padding={8} radius={16}>
           <Row justify="between" gap={16}>
-            <Text size="sm">{costs.length} Kosten</Text>
-            <Text size="sm">{spaces.length} Spaces</Text>
+            <Row gap={8}>
+              <Rows3 color={Colors.primary} size={14} />
+              <Text size="sm">{costs.length} Kosten</Text>
+            </Row>
+            <Row gap={8}>
+              <House color={Colors.primary} size={14} />
+              <Text size="sm">{spaces.length} Spaces</Text>
+            </Row>
           </Row>
         </Card>
         <VSpace size={8} />
