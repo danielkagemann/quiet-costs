@@ -14,6 +14,7 @@ import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
 import { CardCategory } from "@/components/CardCategory";
 import { FABButton } from "@/components/base/FABButton";
+import { Configuration } from "@/utils/configuration";
 
 export default function SpaceDetails() {
   // hooks
@@ -39,6 +40,25 @@ export default function SpaceDetails() {
   // derived state
   const groupedCosts: Record<string, Cost[]> =
     CostService.groupCostsByCategory(costs);
+
+  /**
+   * render expensive category info
+   * @returns
+   */
+  function renderExpensiveCategoryInfo() {
+    const categoryWithMostCosts: [string, number] | null =
+      CostService.getCategoryWithMostAmount(costs);
+    if (!categoryWithMostCosts) return null;
+
+    const [catId, percentage] = categoryWithMostCosts;
+
+    return (
+      <Text size="sm" color="danger" style={{ marginBottom: 16 }}>
+        Deine teuerste Kategorie ist {Configuration.categories[catId]} mit{" "}
+        {percentage.toFixed(2)}% der Gesamtkosten.
+      </Text>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -66,6 +86,8 @@ export default function SpaceDetails() {
         </Card>
 
         <VSpace size={8} />
+
+        {renderExpensiveCategoryInfo()}
 
         <View style={{ gap: 12 }}>
           {Object.keys(groupedCosts).map((category: string, index: number) => (

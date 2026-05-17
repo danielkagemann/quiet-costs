@@ -1,5 +1,4 @@
 import { Cost } from "@/types/costs";
-import { Card } from "./base/Card";
 import { Row } from "./base/Row";
 import { Text } from "./base/Text";
 import { Configuration } from "@/utils/configuration";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import { Colors } from "./base/Colors";
 import { ChevronRight } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { VSpace } from "./base/VSpace";
 
 interface CardCategoryProps {
   categoryId: number;
@@ -95,7 +95,7 @@ export const CardCategory = ({
             style={{
               height: 1,
               backgroundColor: Colors.border,
-              marginVertical: 12,
+              marginTop: 8,
             }}
           />
         )}
@@ -111,9 +111,18 @@ export const CardCategory = ({
     if (!isExpanded) return null;
 
     return (
-      <Card color="empty" padding={12} radius={8} style={{ marginBottom: 8 }}>
+      <>
         {costs.map((cost, index) => renderItem(cost, index))}
-      </Card>
+        <View
+          style={{
+            height: 3,
+            backgroundColor: Colors.border,
+            marginLeft: -16,
+            marginRight: -16,
+          }}
+        />
+        <VSpace size={4} />
+      </>
     );
   }
 

@@ -61,4 +61,30 @@ export const CostService = {
       {} as Record<string, Cost[]>,
     );
   },
+
+  getCategoryWithMostAmount(costs: Cost[]): [string, number] | null {
+    const groupedCosts = this.groupCostsByCategory(costs);
+    let maxCategory: string | null = null;
+    let maxAmount = 0;
+    let totalAmount = 0;
+
+    for (const category in groupedCosts) {
+      const total = groupedCosts[category].reduce(
+        (sum, cost) => sum + this.getAmount(cost),
+        0,
+      );
+      totalAmount += total;
+      if (total > maxAmount) {
+        maxAmount = total;
+        maxCategory = category;
+      }
+    }
+
+    // total amount is 100%
+    // maxAmount is the percentage of the category with the most amount
+    if (totalAmount === 0) return null; // avoid division by zero
+    const percentage = (maxAmount / totalAmount) * 100;
+
+    return maxCategory ? [maxCategory, percentage] : null;
+  },
 };
