@@ -111,7 +111,7 @@ export const CardCategory = ({
     if (!isExpanded) return null;
 
     return (
-      <Card color="empty" padding={12} radius={8}>
+      <Card color="empty" padding={12} radius={8} style={{ marginBottom: 8 }}>
         {costs.map((cost, index) => renderItem(cost, index))}
       </Card>
     );

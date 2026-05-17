@@ -36,7 +36,10 @@ export const Button = ({
       onPress={onPress}
       style={[
         { backgroundColor: colorMap[color] },
-        color === "outline" && { borderWidth: 1, borderColor: Colors.text },
+        color === "outline" && {
+          borderWidth: 1,
+          borderColor: Colors.secondary,
+        },
         {
           paddingVertical: sizeMap[size],
           paddingHorizontal: sizeMap[size] + 2,
@@ -51,12 +54,12 @@ export const Button = ({
         style={[
           color === "primary" && { color: Colors.background },
           color === "secondary" && { color: Colors.background },
-          color === "outline" && { color: Colors.text },
+          color === "outline" && { color: Colors.secondary },
           color === "empty" && { color: Colors.text },
           color === "danger" && { color: Colors.white },
-          size === "sm" && { fontSize: 11 },
-          size === "md" && { fontSize: 13 },
-          size === "lg" && { fontSize: 15 },
+          size === "sm" && { fontSize: 13 },
+          size === "md" && { fontSize: 17 },
+          size === "lg" && { fontSize: 20 },
           { fontWeight: "400" },
         ]}
       >

@@ -5,7 +5,7 @@ import { CostService } from "@/services/cost.service";
 import { DatabaseService } from "@/services/database.service";
 import { Cost } from "@/types/costs";
 import { Space } from "@/types/spaces";
-import { useIsFocused, useLocalSearchParams } from "expo-router";
+import { useIsFocused, useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
@@ -13,12 +13,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
 import { CardCategory } from "@/components/CardCategory";
+import { FABButton } from "@/components/base/FABButton";
 
 export default function SpaceDetails() {
   // hooks
   const param = useLocalSearchParams();
   const db = useSQLiteContext();
   const isInFocus = useIsFocused();
+  const router = useRouter();
 
   // states
   const [space, setSpace] = useState<Space | null>(null);
@@ -50,7 +52,7 @@ export default function SpaceDetails() {
       >
         {/* overview card */}
         <Card color="primary" padding={12} radius={8} style={{ gap: 12 }}>
-          <Text size="sm" color="secondary">
+          <Text size="sm" color="primary">
             MONATLICHE KOSTEN
           </Text>
           <Text size="2xl" weight="bold">
@@ -76,6 +78,7 @@ export default function SpaceDetails() {
           ))}
         </View>
       </ScrollView>
+      <FABButton onPress={() => router.push("/cost/add")} />
     </SafeAreaView>
   );
 }

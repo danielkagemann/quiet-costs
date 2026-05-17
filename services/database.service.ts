@@ -82,4 +82,9 @@ export const DatabaseService = {
       id,
     );
   },
+  dumpAsJson: async (db: SQLiteDatabase) => {
+    const spaces = await db.getAllAsync<Space>("SELECT * FROM space");
+    const costs = await db.getAllAsync<Cost>("SELECT * FROM cost");
+    return JSON.stringify({ spaces, costs }, null, 2);
+  },
 };

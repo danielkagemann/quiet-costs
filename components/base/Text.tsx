@@ -13,13 +13,13 @@ interface TextProps {
 }
 
 const sizeMap: Record<TextSize, number> = {
-  xs: 10,
-  sm: 12,
-  md: 15,
-  lg: 16,
-  xl: 20,
-  "2xl": 24,
-  "3xl": 36,
+  xs: 11,
+  sm: 13,
+  md: 17,
+  lg: 20,
+  xl: 22,
+  "2xl": 28,
+  "3xl": 34,
 };
 
 const weightMap: Record<
@@ -58,7 +58,7 @@ export const Text = ({
 
 export function Headline({ children }: Readonly<{ children: string }>) {
   return (
-    <Text size="lg" weight="bold">
+    <Text size="md" weight="bold">
       {children}
     </Text>
   );
@@ -66,7 +66,7 @@ export function Headline({ children }: Readonly<{ children: string }>) {
 
 export function Label({ children }: Readonly<{ children: string }>) {
   return (
-    <Text size="xs" color="secondary" weight="semi-bold">
+    <Text size="sm" color="secondary" weight="semi-bold">
       {children}
     </Text>
   );

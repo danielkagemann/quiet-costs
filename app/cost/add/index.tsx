@@ -19,6 +19,7 @@ import { Toggle } from "@/components/base/Toggle";
 import { Card } from "@/components/base/Card";
 import { Trash } from "lucide-react-native";
 import { Colors } from "@/components/base/Colors";
+import { Chip } from "@/components/base/Chip";
 
 export default function AddCostScreen() {
   // hooks
@@ -75,14 +76,13 @@ export default function AddCostScreen() {
     return (
       <Row justify="start" gap={4} wrap>
         {items.map((item, index) => (
-          <Button
-            size="sm"
-            key={index}
-            color={cost[attribute] === index ? "primary" : "outline"}
+          <Chip
+            active={cost[attribute] === index}
             onPress={() => setCost({ ...cost, [attribute]: index })}
+            key={index}
           >
             {item}
-          </Button>
+          </Chip>
         ))}
       </Row>
     );
@@ -97,14 +97,13 @@ export default function AddCostScreen() {
     return (
       <Row justify="start" gap={4} wrap>
         {items.map((space) => (
-          <Button
-            size="sm"
-            key={space.id}
-            color={cost.spaceId === space.id ? "primary" : "outline"}
+          <Chip
+            active={cost.spaceId === space.id}
             onPress={() => setCost({ ...cost, spaceId: space.id })}
+            key={space.id}
           >
             {space.name}
-          </Button>
+          </Chip>
         ))}
       </Row>
     );
@@ -191,10 +190,9 @@ export default function AddCostScreen() {
           <Row gap={4} justify="start">
             {(["monthly", "quarterly", "half_yearly", "yearly"] as const).map(
               (cycle) => (
-                <Button
-                  size="sm"
+                <Chip
                   key={cycle}
-                  color={cost.billingCycle === cycle ? "primary" : "secondary"}
+                  active={cost.billingCycle === cycle}
                   onPress={() => setCost({ ...cost, billingCycle: cycle })}
                 >
                   {cycle === "monthly"
@@ -204,7 +202,7 @@ export default function AddCostScreen() {
                       : cycle === "half_yearly"
                         ? "Halbjährlich"
                         : "Jährlich"}
-                </Button>
+                </Chip>
               ),
             )}
           </Row>
@@ -223,7 +221,7 @@ export default function AddCostScreen() {
 
           {/* save button */}
           {CostService.isValid(cost) ? (
-            <Button color="primary" size="lg" onPress={onSave}>
+            <Button color="primary" size="lg" radius="lg" onPress={onSave}>
               Speichern
             </Button>
           ) : (

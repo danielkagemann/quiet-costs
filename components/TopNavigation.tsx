@@ -1,8 +1,8 @@
-import { View, useWindowDimensions } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { Row } from "./base/Row";
-import { Button } from "./base/Button";
 import { Text } from "./base/Text";
+import { ChevronLeft } from "lucide-react-native";
 
 interface TopNavigationProps {
   title: string;
@@ -17,15 +17,15 @@ export const TopNavigation = ({ title, sub }: TopNavigationProps) => {
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <Row justify="start" gap={8} style={{ width: windowWidth - 48 }}>
-        <Button color="empty" onPress={() => router.back()}>
-          &larr;
-        </Button>
+        <Pressable onPress={() => router.back()}>
+          <ChevronLeft size={24} color={"black"} />
+        </Pressable>
         <View>
-          <Text size="md" weight="bold">
+          <Text size="lg" weight="bold">
             {title}
           </Text>
           {!!sub && (
-            <Text size="xs" color="secondary">
+            <Text size="sm" color="secondary">
               {sub}
             </Text>
           )}

@@ -29,6 +29,8 @@ export const Input = ({
       inputMode={inputMode}
       onChangeText={onChange}
       style={{
+        fontSize: 17,
+        color: Colors.text,
         borderWidth: 1,
         borderColor: Colors.border,
         borderRadius: 8,

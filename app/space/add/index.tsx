@@ -1,4 +1,3 @@
-import { Card, CardDescription, CardTitle } from "@/components/base/Card";
 import { Input } from "@/components/base/Input";
 import { TopNavigation } from "@/components/TopNavigation";
 import { Space } from "@/types/spaces";
@@ -10,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/base/Button";
 import { DatabaseService } from "@/services/database.service";
 import { SpaceService } from "@/services/space.service";
-import { Headline, Label, Text } from "@/components/base/Text";
+import { Headline, Label } from "@/components/base/Text";
 import { InfoBox } from "@/components/InfoBox";
 import { VSpace } from "@/components/base/VSpace";
 
@@ -69,7 +68,7 @@ export default function SpaceAddScreen() {
 
           {/* save button */}
           {SpaceService.isValid(space) ? (
-            <Button color="primary" size="lg" onPress={onSave}>
+            <Button color="primary" size="lg" radius="lg" onPress={onSave}>
               Speichern
             </Button>
           ) : (
