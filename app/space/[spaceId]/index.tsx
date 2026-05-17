@@ -5,20 +5,20 @@ import { CostService } from "@/services/cost.service";
 import { DatabaseService } from "@/services/database.service";
 import { Cost } from "@/types/costs";
 import { Space } from "@/types/spaces";
-import { useLocalSearchParams } from "expo-router";
+import { useIsFocused, useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
-import { Fragment, useEffect, useState } from "react";
-import { Pressable, ScrollView, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
-import { Colors } from "@/components/base/Colors";
 import { CardCategory } from "@/components/CardCategory";
 
 export default function SpaceDetails() {
   // hooks
   const param = useLocalSearchParams();
   const db = useSQLiteContext();
+  const isInFocus = useIsFocused();
 
   // states
   const [space, setSpace] = useState<Space | null>(null);
@@ -32,7 +32,7 @@ export default function SpaceDetails() {
     DatabaseService.getCostsForSpace(db, spaceId).then((data) => {
       setCosts(data);
     });
-  }, [db, param.spaceId]);
+  }, [db, param.spaceId, isInFocus]);
 
   // derived state
   const groupedCosts: Record<string, Cost[]> =

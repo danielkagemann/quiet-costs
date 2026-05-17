@@ -41,6 +41,9 @@ export const DatabaseService = {
   getCosts: async (db: SQLiteDatabase) => {
     return await db.getAllAsync<Cost>("SELECT * FROM cost");
   },
+  getCostById: async (db: SQLiteDatabase, id: number) => {
+    return await db.getFirstAsync<Cost>("SELECT * FROM cost WHERE id = ?", id);
+  },
   getCostsForSpace: async (db: SQLiteDatabase, spaceId: number) => {
     return await db.getAllAsync<Cost>("SELECT * FROM cost WHERE spaceId = ?", [
       spaceId,
@@ -48,10 +51,23 @@ export const DatabaseService = {
   },
   createCost: async (db: SQLiteDatabase, cost: Cost) => {
     const { name, amount, isActive, billingCycle, categoryId, spaceId } = cost;
+
     await db.runAsync(
       "INSERT INTO cost (name, amount, isActive, billingCycle, categoryId, spaceId) VALUES (?, ?, ?, ?, ?, ?)",
       [name, amount, isActive ? 1 : 0, billingCycle, categoryId, spaceId],
     );
+  },
+  updateCost: async (db: SQLiteDatabase, cost: Cost) => {
+    const { id, name, amount, isActive, billingCycle, categoryId, spaceId } =
+      cost;
+
+    await db.runAsync(
+      "UPDATE cost SET name = ?, amount = ?, isActive = ?, billingCycle = ?, categoryId = ?, spaceId = ? WHERE id = ?",
+      [name, amount, isActive ? 1 : 0, billingCycle, categoryId, spaceId, id],
+    );
+  },
+  deleteCost: async (db: SQLiteDatabase, id: number) => {
+    await db.runAsync("DELETE FROM cost WHERE id = ?", id);
   },
   addSpace: async (db: SQLiteDatabase, space: Space) => {
     const { name, description, imageData } = space;

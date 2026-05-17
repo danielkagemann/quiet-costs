@@ -8,6 +8,7 @@ import { Pressable, View } from "react-native";
 import { useState } from "react";
 import { Colors } from "./base/Colors";
 import { ChevronRight } from "lucide-react-native";
+import { useRouter } from "expo-router";
 
 interface CardCategoryProps {
   categoryId: number;
@@ -20,6 +21,9 @@ export const CardCategory = ({
   costs,
   initiallyOpen = false,
 }: CardCategoryProps) => {
+  // hooks
+  const router = useRouter();
+
   // states
   const [isExpanded, setIsExpanded] = useState<boolean>(initiallyOpen);
 
@@ -30,10 +34,32 @@ export const CardCategory = ({
    * @returns
    */
   function renderItem(cost: Cost, index: number) {
+    let amountText = CostService.formatAmount(cost.amount);
+    if (!cost.isActive) {
+      amountText = `(${amountText})`;
+    }
     return (
-      <Pressable key={cost.id} onPress={() => null}>
+      <Pressable
+        key={cost.id}
+        onPress={() => router.push(`/cost/add?id=${cost.id}`)}
+      >
         <Row justify="between">
           {/* name */}
+          {!cost.isActive && (
+            <View
+              style={{
+                backgroundColor: Colors.danger,
+                paddingVertical: 2,
+                paddingHorizontal: 4,
+                marginRight: 4,
+                borderRadius: 4,
+              }}
+            >
+              <Text size="xs" color={"white"}>
+                Inaktiv
+              </Text>
+            </View>
+          )}
           <Text size="sm" color="secondary" style={{ flex: 1 }}>
             {cost.name}
           </Text>
@@ -54,8 +80,12 @@ export const CardCategory = ({
 
           {/* amount */}
           <Row gap={4} style={{ minWidth: 90, justifyContent: "flex-end" }}>
-            <Text size="sm" color="secondary">
-              {CostService.formatAmount(CostService.getAmount(cost))}
+            <Text
+              size="sm"
+              color={cost.isActive ? "text" : "secondary"}
+              weight="semi-bold"
+            >
+              {amountText}
             </Text>
             <ChevronRight size={16} color={Colors.secondary} />
           </Row>

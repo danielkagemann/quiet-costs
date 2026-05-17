@@ -1,11 +1,11 @@
 import { DatabaseService } from "@/services/database.service";
 import { Cost } from "@/types/costs";
 import { Space } from "@/types/spaces";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { Headline, Label } from "@/components/base/Text";
+import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { Headline, Label, Text } from "@/components/base/Text";
 import { Input } from "@/components/base/Input";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Row } from "@/components/base/Row";
@@ -15,11 +15,16 @@ import { TopNavigation } from "@/components/TopNavigation";
 import { CostService } from "@/services/cost.service";
 import { InfoBox } from "@/components/InfoBox";
 import { VSpace } from "@/components/base/VSpace";
+import { Toggle } from "@/components/base/Toggle";
+import { Card } from "@/components/base/Card";
+import { Trash } from "lucide-react-native";
+import { Colors } from "@/components/base/Colors";
 
 export default function AddCostScreen() {
   // hooks
   const db = useSQLiteContext();
   const router = useRouter();
+  const param = useLocalSearchParams();
 
   // states
   const [spaces, setSpaces] = useState<Space[]>([]);
@@ -42,7 +47,23 @@ export default function AddCostScreen() {
       // pre-select the first space if available
       if (list.length > 0) setCost((c) => ({ ...c, spaceId: list[0].id }));
     });
-  }, [db]);
+
+    // now check if we have an id param, if yes, we are in edit mode and need to load the cost
+    if (param.id) {
+      const costId = Number.parseInt(param.id as string);
+      if (!Number.isNaN(costId)) {
+        DatabaseService.getCostById(db, costId).then((item) => {
+          if (item) {
+            setCost(item);
+            setAmountInput(item.amount.toString());
+          }
+        });
+      }
+    }
+  }, [db, param.id]);
+
+  // derived state for editing mode
+  const isEditing = cost.id !== 0;
 
   /**
    * render chips
@@ -95,7 +116,23 @@ export default function AddCostScreen() {
    */
   function onSave() {
     if (!db) return;
-    DatabaseService.createCost(db, cost).then(() => {
+    if (isEditing) {
+      DatabaseService.updateCost(db, cost).then(() => {
+        router.back();
+      });
+    } else {
+      DatabaseService.createCost(db, cost).then(() => {
+        router.back();
+      });
+    }
+  }
+
+  /**
+   * delete the cost from database
+   */
+  function onDelete() {
+    if (!db) return;
+    DatabaseService.deleteCost(db, cost.id).then(() => {
       router.back();
     });
   }
@@ -136,6 +173,17 @@ export default function AddCostScreen() {
               setCost({ ...cost, amount: Number.parseFloat(sanitized) || 0 });
             }}
           />
+
+          {/* active toggle: only in case of editing */}
+          {isEditing && (
+            <Row justify="between">
+              <Label>Ist es noch aktiv?</Label>
+              <Toggle
+                value={cost.isActive}
+                onChange={(value) => setCost({ ...cost, isActive: value })}
+              />
+            </Row>
+          )}
           <VSpace size={8} />
 
           {/* billing cycle */}
@@ -183,6 +231,43 @@ export default function AddCostScreen() {
               title="Speichern"
               description="Bitte fülle alle Pflichtfelder aus."
             />
+          )}
+
+          {/* delete button: only if in editing mode */}
+          {isEditing && (
+            <>
+              <VSpace size={8} />
+              <Card color="empty" padding={12} radius={8}>
+                <Row gap={8}>
+                  <View
+                    style={{
+                      backgroundColor: Colors.danger,
+                      padding: 8,
+                      borderRadius: 20,
+                    }}
+                  >
+                    <Trash size={14} color={Colors.white} />
+                  </View>
+                  <Text color="danger" weight="bold">
+                    Kostenpunkt löschen
+                  </Text>
+                </Row>
+
+                <View>
+                  <VSpace size={4} />
+                  <Text color="secondary" size="sm">
+                    Wenn Du diesen Kostenpunkt nicht mehr benötigst, kannst Du
+                    ihn hier löschen. Diese Aktion kann nicht rückgängig gemacht
+                    werden.
+                  </Text>
+                </View>
+                <Row justify="end">
+                  <Button color="danger" size="md" onPress={onDelete}>
+                    Löschen
+                  </Button>
+                </Row>
+              </Card>
+            </>
           )}
         </ScrollView>
       </KeyboardAvoidingView>

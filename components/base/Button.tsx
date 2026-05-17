@@ -4,7 +4,7 @@ import { Colors } from "./Colors";
 interface ButtonProps {
   children: string;
   onPress: () => void;
-  color?: "primary" | "secondary" | "light" | "outline" | "empty";
+  color?: "primary" | "secondary" | "light" | "outline" | "empty" | "danger";
   size?: "sm" | "md" | "lg";
   radius?: "sm" | "md" | "lg";
 }
@@ -22,6 +22,7 @@ export const Button = ({
     outline: "transparent",
     empty: "transparent",
     light: Colors.ternary,
+    danger: Colors.danger,
   };
 
   const sizeMap: Record<string, number> = {
@@ -52,6 +53,7 @@ export const Button = ({
           color === "secondary" && { color: Colors.background },
           color === "outline" && { color: Colors.text },
           color === "empty" && { color: Colors.text },
+          color === "danger" && { color: Colors.white },
           size === "sm" && { fontSize: 11 },
           size === "md" && { fontSize: 13 },
           size === "lg" && { fontSize: 15 },

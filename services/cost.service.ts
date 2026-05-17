@@ -28,6 +28,7 @@ export const CostService = {
   },
 
   getAmount(cost: Cost) {
+    if (!cost.isActive) return 0;
     if (cost.billingCycle === "monthly") {
       return cost.amount;
     } else if (cost.billingCycle === "quarterly") {
