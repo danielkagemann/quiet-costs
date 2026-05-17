@@ -55,3 +55,19 @@ export const Text = ({
     </RNText>
   );
 };
+
+export function Headline({ children }: Readonly<{ children: string }>) {
+  return (
+    <Text size="lg" weight="bold">
+      {children}
+    </Text>
+  );
+}
+
+export function Label({ children }: Readonly<{ children: string }>) {
+  return (
+    <Text size="xs" color="secondary" weight="semi-bold">
+      {children}
+    </Text>
+  );
+}

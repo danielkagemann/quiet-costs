@@ -10,7 +10,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/base/Button";
 import { DatabaseService } from "@/services/database.service";
 import { SpaceService } from "@/services/space.service";
-import { Text } from "@/components/base/Text";
+import { Headline, Label, Text } from "@/components/base/Text";
+import { InfoBox } from "@/components/InfoBox";
+import { VSpace } from "@/components/base/VSpace";
 
 export default function SpaceAddScreen() {
   // hooks
@@ -46,24 +48,24 @@ export default function SpaceAddScreen() {
         />
 
         <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
-          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            <CardTitle>Informationen zum Space</CardTitle>
-            <CardDescription>
-              Wähle einen Namen für Deinen Space, z.B. Zuhause, Arbeit, etc. So
-              kannst Du Deine Kosten später besser zuordnen und analysieren.
-            </CardDescription>
+          <Headline>Informationen zum Space</Headline>
 
-            <Input
-              placeholder="e.g. Zuhause, Arbeit, etc."
-              value={space.name}
-              onChange={(text) => setSpace({ ...space, name: text })}
-            />
-            <Input
-              placeholder="Beschreibung (optional)"
-              value={space.description ?? ""}
-              onChange={(text) => setSpace({ ...space, description: text })}
-            />
-          </Card>
+          <Label>
+            Name für den Space mit dem Du Kosten verknüpfen möchtest
+          </Label>
+          <Input
+            placeholder="e.g. Zuhause, Arbeit, etc."
+            value={space.name}
+            onChange={(text) => setSpace({ ...space, name: text })}
+          />
+          <Label>Beschreibung über den Space (optional)</Label>
+          <Input
+            placeholder="Beschreibung"
+            value={space.description ?? ""}
+            onChange={(text) => setSpace({ ...space, description: text })}
+          />
+
+          <VSpace size={16} />
 
           {/* save button */}
           {SpaceService.isValid(space) ? (
@@ -71,9 +73,10 @@ export default function SpaceAddScreen() {
               Speichern
             </Button>
           ) : (
-            <Text size="sm" color="secondary">
-              Bitte fülle alle Pflichtfelder aus, um fortzufahren.
-            </Text>
+            <InfoBox
+              title="Speichern"
+              description="Bitte fülle alle Pflichtfelder aus."
+            />
           )}
         </ScrollView>
       </KeyboardAvoidingView>

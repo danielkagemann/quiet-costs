@@ -5,15 +5,16 @@ import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { Text } from "@/components/base/Text";
+import { Headline, Label } from "@/components/base/Text";
 import { Input } from "@/components/base/Input";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Row } from "@/components/base/Row";
 import { Button } from "@/components/base/Button";
-import { Card, CardDescription, CardTitle } from "@/components/base/Card";
 import { Configuration } from "@/utils/configuration";
 import { TopNavigation } from "@/components/TopNavigation";
 import { CostService } from "@/services/cost.service";
+import { InfoBox } from "@/components/InfoBox";
+import { VSpace } from "@/components/base/VSpace";
 
 export default function AddCostScreen() {
   // hooks
@@ -56,7 +57,7 @@ export default function AddCostScreen() {
           <Button
             size="sm"
             key={index}
-            color={cost[attribute] === index ? "primary" : "light"}
+            color={cost[attribute] === index ? "primary" : "outline"}
             onPress={() => setCost({ ...cost, [attribute]: index })}
           >
             {item}
@@ -78,7 +79,7 @@ export default function AddCostScreen() {
           <Button
             size="sm"
             key={space.id}
-            color={cost.spaceId === space.id ? "primary" : "light"}
+            color={cost.spaceId === space.id ? "primary" : "outline"}
             onPress={() => setCost({ ...cost, spaceId: space.id })}
           >
             {space.name}
@@ -113,85 +114,64 @@ export default function AddCostScreen() {
 
         <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
           {/* Name & amount & billing */}
-          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            <CardTitle>Allgemein</CardTitle>
-            <CardDescription>
-              Hier kannst Du allgemeine Informationen zu Deiner Ausgabe
-              eingeben.
-            </CardDescription>
-
-            <Input
-              placeholder="e.g. Netflix"
-              value={cost.name}
-              onChange={(text) => setCost({ ...cost, name: text })}
-            />
-            <Input
-              placeholder="0.00"
-              inputMode="decimal"
-              value={amountInput}
-              onChange={(text) => {
-                // replace comma with dot, strip everything except digits and one dot
-                const normalized = text.replace(",", ".");
-                const sanitized = normalized
-                  .replace(/[^0-9.]/g, "")
-                  .replace(/^(\d*\.?\d*).*$/, "$1");
-                setAmountInput(sanitized);
-                setCost({ ...cost, amount: Number.parseFloat(sanitized) || 0 });
-              }}
-            />
-          </Card>
+          <Headline>Allgemein</Headline>
+          <Label>Benenne die Ausgabe, z.B. Netflix</Label>
+          <Input
+            placeholder="e.g. Netflix"
+            value={cost.name}
+            onChange={(text) => setCost({ ...cost, name: text })}
+          />
+          <Label>Gib den Betrag der Ausgabe ein, z.B. 9.99</Label>
+          <Input
+            placeholder="0.00"
+            inputMode="decimal"
+            value={amountInput}
+            onChange={(text) => {
+              // replace comma with dot, strip everything except digits and one dot
+              const normalized = text.replace(",", ".");
+              const sanitized = normalized
+                .replace(/[^0-9.]/g, "")
+                .replace(/^(\d*\.?\d*).*$/, "$1");
+              setAmountInput(sanitized);
+              setCost({ ...cost, amount: Number.parseFloat(sanitized) || 0 });
+            }}
+          />
+          <VSpace size={8} />
 
           {/* billing cycle */}
-          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            <CardTitle>Abrechnungszeitraum</CardTitle>
-            <CardDescription>
-              Wähle aus, ob die Ausgabe monatlich, vierteljährlich oder jährlich
-              abgerechnet wird.
-            </CardDescription>
-            <Row gap={4} justify="start">
-              {(["monthly", "quarterly", "half_yearly", "yearly"] as const).map(
-                (cycle) => (
-                  <Button
-                    size="sm"
-                    key={cycle}
-                    color={
-                      cost.billingCycle === cycle ? "primary" : "secondary"
-                    }
-                    onPress={() => setCost({ ...cost, billingCycle: cycle })}
-                  >
-                    {cycle === "monthly"
-                      ? "Monatlich"
-                      : cycle === "quarterly"
-                        ? "Vierteljährlich"
-                        : cycle === "half_yearly"
-                          ? "Halbjährlich"
-                          : "Jährlich"}
-                  </Button>
-                ),
-              )}
-            </Row>
-          </Card>
+          <Headline>Abrechnungszeitraum</Headline>
+          <Row gap={4} justify="start">
+            {(["monthly", "quarterly", "half_yearly", "yearly"] as const).map(
+              (cycle) => (
+                <Button
+                  size="sm"
+                  key={cycle}
+                  color={cost.billingCycle === cycle ? "primary" : "secondary"}
+                  onPress={() => setCost({ ...cost, billingCycle: cycle })}
+                >
+                  {cycle === "monthly"
+                    ? "Monatlich"
+                    : cycle === "quarterly"
+                      ? "Vierteljährlich"
+                      : cycle === "half_yearly"
+                        ? "Halbjährlich"
+                        : "Jährlich"}
+                </Button>
+              ),
+            )}
+          </Row>
+          <VSpace size={8} />
 
           {/* categories */}
-          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            <CardTitle>Kategorie auswählen</CardTitle>
-            <CardDescription>
-              Wähle die Kategorie aus, die am besten zu Deiner Ausgabe passt. So
-              behältst Du immer den Überblick.
-            </CardDescription>
-            {chips(Configuration.categories, "categoryId")}
-          </Card>
+          <Headline>Kategorie auswählen</Headline>
+          {chips(Configuration.categories, "categoryId")}
+          <VSpace size={8} />
 
           {/* spaces */}
-          <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-            <CardTitle>Space auswählen</CardTitle>
-            <CardDescription>
-              Ordne Deine Ausgabe einem Space zu, um sie besser zu organisieren
-              und zuordnen zu können.
-            </CardDescription>
+          <Headline>Space auswählen</Headline>
+          {spaceChips(spaces)}
 
-            {spaceChips(spaces)}
-          </Card>
+          <VSpace size={16} />
 
           {/* save button */}
           {CostService.isValid(cost) ? (
@@ -199,9 +179,10 @@ export default function AddCostScreen() {
               Speichern
             </Button>
           ) : (
-            <Text size="sm" color="secondary">
-              Bitte fülle alle Pflichtfelder aus, um fortzufahren.
-            </Text>
+            <InfoBox
+              title="Speichern"
+              description="Bitte fülle alle Pflichtfelder aus."
+            />
           )}
         </ScrollView>
       </KeyboardAvoidingView>

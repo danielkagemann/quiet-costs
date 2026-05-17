@@ -7,97 +7,103 @@ import { CostService } from "@/services/cost.service";
 import { Pressable, View } from "react-native";
 import { useState } from "react";
 import { Colors } from "./base/Colors";
-import { ChevronDown, ChevronRight, ChevronUp } from "lucide-react-native";
+import { ChevronRight } from "lucide-react-native";
 
 interface CardCategoryProps {
   categoryId: number;
   costs: Cost[];
+  initiallyOpen?: boolean;
 }
 
-export const CardCategory = ({ categoryId, costs }: CardCategoryProps) => {
+export const CardCategory = ({
+  categoryId,
+  costs,
+  initiallyOpen = false,
+}: CardCategoryProps) => {
   // states
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(initiallyOpen);
 
+  /**
+   * render item within a category
+   * @param cost
+   * @param index
+   * @returns
+   */
+  function renderItem(cost: Cost, index: number) {
+    return (
+      <Pressable key={cost.id} onPress={() => null}>
+        <Row justify="between">
+          {/* name */}
+          <Text size="sm" color="secondary" style={{ flex: 1 }}>
+            {cost.name}
+          </Text>
+
+          {/* billing cycle */}
+          <View
+            style={{
+              backgroundColor: Colors.border,
+              paddingHorizontal: 4,
+              paddingVertical: 2,
+              borderRadius: 4,
+            }}
+          >
+            <Text size="xs" color="secondary">
+              {CostService.getBillingCycle(cost)}
+            </Text>
+          </View>
+
+          {/* amount */}
+          <Row gap={4} style={{ minWidth: 90, justifyContent: "flex-end" }}>
+            <Text size="sm" color="secondary">
+              {CostService.formatAmount(CostService.getAmount(cost))}
+            </Text>
+            <ChevronRight size={16} color={Colors.secondary} />
+          </Row>
+        </Row>
+        {index < costs.length - 1 && (
+          <View
+            style={{
+              height: 1,
+              backgroundColor: Colors.border,
+              marginVertical: 12,
+            }}
+          />
+        )}
+      </Pressable>
+    );
+  }
+
+  /**
+   * render costs for a specific category
+   * @returns
+   */
   function renderList() {
     if (!isExpanded) return null;
 
     return (
-      <>
-        <View
-          style={{
-            height: 1,
-            backgroundColor: Colors.border,
-            marginVertical: 8,
-          }}
-        />
-
-        <View style={{ gap: 8 }}>
-          {costs.map((cost, index) => (
-            <Pressable key={cost.id} onPress={() => null}>
-              <Row justify="between">
-                <Text size="sm" color="secondary">
-                  {cost.name}
-                </Text>
-
-                <View
-                  style={{
-                    backgroundColor: Colors.border,
-                    paddingHorizontal: 4,
-                    paddingVertical: 2,
-                    borderRadius: 4,
-                  }}
-                >
-                  <Text size="xs" color="secondary">
-                    {CostService.getBillingCycle(cost)}
-                  </Text>
-                </View>
-                <Row gap={4}>
-                  <Text size="sm" color="secondary">
-                    {CostService.formatAmount(CostService.getAmount(cost))}
-                  </Text>
-                  <ChevronRight size={16} color={Colors.secondary} />
-                </Row>
-              </Row>
-              {index < costs.length - 1 && (
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: Colors.border,
-                    marginTop: 8,
-                  }}
-                />
-              )}
-            </Pressable>
-          ))}
-        </View>
-      </>
+      <Card color="empty" padding={12} radius={8}>
+        {costs.map((cost, index) => renderItem(cost, index))}
+      </Card>
     );
   }
 
   return (
-    <Card color="empty">
+    <>
       <Pressable onPress={() => setIsExpanded((prev) => !prev)}>
         <Row justify="between">
           <Text size="md" weight="bold">
             {Configuration.categories[categoryId]}
           </Text>
-          <Row gap={4}>
-            <Text size="md" color="primary" weight="bold">
-              {CostService.formatAmount(
-                CostService.getTotalPerMonth(
-                  costs.filter((c) => c.categoryId === categoryId),
-                ),
-              )}
-            </Text>
-            {isExpanded ? (
-              <ChevronUp size={20} color={Colors.text} />
-            ) : (
-              <ChevronRight size={20} color={Colors.text} />
+          <Text size="md" color="primary" weight="bold">
+            {CostService.formatAmount(
+              CostService.getTotalPerMonth(
+                costs.filter((c) => c.categoryId === categoryId),
+              ),
             )}
-          </Row>
+          </Text>
         </Row>
       </Pressable>
       {renderList()}
-    </Card>
+    </>
   );
 };

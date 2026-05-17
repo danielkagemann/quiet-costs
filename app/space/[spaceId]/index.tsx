@@ -39,37 +39,39 @@ export default function SpaceDetails() {
     CostService.groupCostsByCategory(costs);
 
   return (
-    <SafeAreaView style={{ flex: 1, paddingHorizontal: 16 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       {/*header*/}
       <TopNavigation
         title={space ? space.name : "Lade Space..."}
         sub="Alle Kosten für diesen Space auf einen Blick."
       />
-      <VSpace size={16} />
-
-      {/* overview card */}
-      <Card color="empty" padding={12} radius={8} style={{ gap: 12 }}>
-        <Text size="sm" color="secondary">
-          MONATLICHE KOSTEN
-        </Text>
-        <Text size="2xl" weight="bold">
-          {CostService.formatAmount(CostService.getTotalPerMonth(costs))}
-        </Text>
-        <Text size="xs" color="secondary">
-          Alle Kosten werden auf einen monatlichen Betrag umgerechnet, um die
-          Übersicht zu erleichtern.
-        </Text>
-      </Card>
-
       <ScrollView
-        style={{ flex: 1, flexDirection: "column", gap: 12, paddingTop: 16 }}
+        style={{ flex: 1, flexDirection: "column", gap: 12, padding: 16 }}
       >
-        <View style={{ gap: 8 }}>
-          {Object.keys(groupedCosts).map((category: string) => (
+        {/* overview card */}
+        <Card color="primary" padding={12} radius={8} style={{ gap: 12 }}>
+          <Text size="sm" color="secondary">
+            MONATLICHE KOSTEN
+          </Text>
+          <Text size="2xl" weight="bold">
+            {CostService.formatAmount(CostService.getTotalPerMonth(costs))}
+          </Text>
+          <Text size="xs" color="secondary">
+            Alle Kosten werden auf einen monatlichen Betrag umgerechnet, um die
+            Übersicht zu erleichtern. Tippe auf eine Kategorie, um die Details
+            zu sehen.
+          </Text>
+        </Card>
+
+        <VSpace size={8} />
+
+        <View style={{ gap: 12 }}>
+          {Object.keys(groupedCosts).map((category: string, index: number) => (
             <CardCategory
               key={category}
               categoryId={Number(category)}
               costs={groupedCosts[category]}
+              initiallyOpen={index === 0} // open first category by default
             />
           ))}
         </View>
