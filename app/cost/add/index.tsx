@@ -20,6 +20,7 @@ import { Card } from "@/components/base/Card";
 import { Trash } from "lucide-react-native";
 import { Colors } from "@/components/base/Colors";
 import { Chip } from "@/components/base/Chip";
+import { CostDetector } from "@/services/costdetector.service";
 
 export default function AddCostScreen() {
   // hooks
@@ -30,6 +31,7 @@ export default function AddCostScreen() {
   // states
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [amountInput, setAmountInput] = useState("");
+  const [categoryManuallySet, setCategoryManuallySet] = useState(false);
   const [cost, setCost] = useState<Cost>({
     id: 0,
     name: "",
@@ -67,6 +69,18 @@ export default function AddCostScreen() {
   const isEditing = cost.id !== 0;
 
   /**
+   * Run CostDetector when the name field loses focus.
+   * Only applies in create mode and when no category was manually selected.
+   */
+  function onNameBlur() {
+    if (isEditing || categoryManuallySet || cost.name.trim().length < 2) return;
+    const detected = CostDetector.detectCategory(cost.name);
+    if (detected >= 0) {
+      setCost((c) => ({ ...c, categoryId: detected }));
+    }
+  }
+
+  /**
    * render chips
    * @param items
    * @param attribute
@@ -78,7 +92,10 @@ export default function AddCostScreen() {
         {items.map((item, index) => (
           <Chip
             active={cost[attribute] === index}
-            onPress={() => setCost({ ...cost, [attribute]: index })}
+            onPress={() => {
+              setCost({ ...cost, [attribute]: index });
+              if (attribute === "categoryId") setCategoryManuallySet(true);
+            }}
             key={index}
           >
             {item}
@@ -156,6 +173,7 @@ export default function AddCostScreen() {
             placeholder="e.g. Netflix"
             value={cost.name}
             onChange={(text) => setCost({ ...cost, name: text })}
+            onBlur={onNameBlur}
           />
           <Label>Gib den Betrag der Ausgabe ein, z.B. 9.99</Label>
           <Input

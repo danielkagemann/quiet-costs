@@ -5,6 +5,7 @@ interface InputProps {
   placeholder?: string;
   value: string;
   onChange: (text: string) => void;
+  onBlur?: () => void;
   inputMode?:
     | "text"
     | "numeric"
@@ -20,6 +21,7 @@ export const Input = ({
   placeholder,
   value,
   onChange,
+  onBlur,
   inputMode = "text",
 }: InputProps) => {
   return (
@@ -28,6 +30,7 @@ export const Input = ({
       value={value}
       inputMode={inputMode}
       onChangeText={onChange}
+      onBlur={onBlur}
       style={{
         fontSize: 17,
         color: Colors.text,

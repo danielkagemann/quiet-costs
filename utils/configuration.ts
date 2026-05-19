@@ -1,3 +1,16 @@
+import {
+  ReceiptText,
+  Shield,
+  Landmark,
+  Cloud,
+  MonitorPlay,
+  House,
+  CarFront,
+  Dumbbell,
+  BadgeCheck,
+  CircleEllipsis,
+} from "lucide-react-native";
+
 export const Configuration = {
   storage: {
     welcomeSeen: "welcome:seen",
@@ -13,5 +26,17 @@ export const Configuration = {
     "Gesundheit & Fitness",
     "Mitgliedschaften",
     "Sonstiges",
+  ],
+  categoryIcons: [
+    ReceiptText,
+    Shield,
+    Landmark,
+    Cloud,
+    MonitorPlay,
+    House,
+    CarFront,
+    Dumbbell,
+    BadgeCheck,
+    CircleEllipsis,
   ],
 };

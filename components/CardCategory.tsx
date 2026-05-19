@@ -68,9 +68,9 @@ export const CardCategory = ({
           <View
             style={{
               backgroundColor: Colors.border,
-              paddingHorizontal: 4,
-              paddingVertical: 2,
-              borderRadius: 4,
+              paddingHorizontal: 5,
+              paddingVertical: 1,
+              borderRadius: 8,
             }}
           >
             <Text size="xs" color="secondary">
@@ -80,11 +80,7 @@ export const CardCategory = ({
 
           {/* amount */}
           <Row gap={4} style={{ minWidth: 90, justifyContent: "flex-end" }}>
-            <Text
-              size="sm"
-              color={cost.isActive ? "text" : "secondary"}
-              weight="semi-bold"
-            >
+            <Text size="sm" color={cost.isActive ? "text" : "secondary"}>
               {amountText}
             </Text>
             <ChevronRight size={16} color={Colors.secondary} />
@@ -115,7 +111,7 @@ export const CardCategory = ({
         {costs.map((cost, index) => renderItem(cost, index))}
         <View
           style={{
-            height: 3,
+            height: 2,
             backgroundColor: Colors.border,
             marginLeft: -16,
             marginRight: -16,
@@ -126,11 +122,25 @@ export const CardCategory = ({
     );
   }
 
+  const IconComponent = Configuration.categoryIcons[categoryId];
+
   return (
     <>
-      <Pressable onPress={() => setIsExpanded((prev) => !prev)}>
+      <Pressable
+        onPress={() => setIsExpanded((prev) => !prev)}
+        style={{ paddingVertical: 4 }}
+      >
         <Row justify="between">
-          <Text size="md" weight="bold">
+          <View
+            style={{
+              backgroundColor: Colors.border,
+              padding: 6,
+              borderRadius: 20,
+            }}
+          >
+            <IconComponent size={12} color={Colors.secondary} />
+          </View>
+          <Text size="md" weight="bold" style={{ flex: 1, marginLeft: 8 }}>
             {Configuration.categories[categoryId]}
           </Text>
           <Text size="md" color="primary" weight="bold">
