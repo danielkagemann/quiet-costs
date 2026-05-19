@@ -11,23 +11,21 @@ export const FABButton = ({ onPress }: FABButtonProps) => {
     <View
       style={{
         position: "absolute",
-        bottom: 16,
+        bottom: 32,
         right: 16,
-        width: 56,
-        height: 56,
+        left: 16,
         borderRadius: 28,
         backgroundColor: Colors.primary,
         justifyContent: "center",
         alignItems: "center",
+        paddingVertical: 16,
       }}
     >
       <Pressable
         onPress={onPress}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >
-        <Text size="2xl" weight="bold" color="white">
-          +
-        </Text>
+        <Text color="white">Kosten hinzufügen</Text>
       </Pressable>
     </View>
   );

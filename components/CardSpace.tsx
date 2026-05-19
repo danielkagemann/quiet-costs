@@ -5,6 +5,7 @@ import { VSpace } from "./base/VSpace";
 import { Row } from "./base/Row";
 import { View } from "react-native";
 import { CostService } from "@/services/cost.service";
+import { ChevronRight } from "lucide-react-native";
 
 interface CardSpaceProps {
   name: string;
@@ -14,18 +15,16 @@ interface CardSpaceProps {
 export const CardSpace = ({ name, costs }: CardSpaceProps) => {
   if (costs.length === 0) {
     return (
-      <Card color="empty" padding={16} radius={12}>
+      <View>
         <Text size="md" weight="bold">
           {name}
         </Text>
         <VSpace size={4} />
-        <Text color="text">Noch keine laufenden Kosten.</Text>
-        <VSpace size={4} />
-        <Text color="secondary">
-          Hier siehst Du monatliche Gesamtbelastung, Kosten pro Space und
-          jährliche Verpflichtungen
+        <Text color="secondary" size="sm">
+          Noch keine laufenden Kosten.
         </Text>
-      </Card>
+        <VSpace size={4} />
+      </View>
     );
   }
 
@@ -33,25 +32,28 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
 
   // show more information with click options, e.g. show all costs, edit, delete, etc.
   return (
-    <Card color="empty" padding={12} radius={12}>
-      <Row justify="between" gap={16}>
-        <View>
-          <Text size="md" weight="bold">
-            {name}
-          </Text>
-          <Text size="xs" color="secondary">
-            {costs.length} Einträge
-          </Text>
-        </View>
-        <View>
-          <Text size="md" weight="bold" style={{ textAlign: "right" }}>
-            {CostService.formatAmount(total)}
-          </Text>
-          <Text size="xs" color="secondary" style={{ textAlign: "right" }}>
-            monatliche Kosten
-          </Text>
-        </View>
-      </Row>
-    </Card>
+    <Row justify="between" gap={16}>
+      <View style={{ gap: 8 }}>
+        <Text size="md" weight="bold">
+          {name}
+        </Text>
+        <Text size="sm" color="secondary">
+          {costs.length} Einträge
+        </Text>
+      </View>
+      <View>
+        <Row justify="between">
+          <View>
+            <Text size="md" weight="bold" style={{ textAlign: "right" }}>
+              {CostService.formatAmount(total)}
+            </Text>
+            <Text size="xs" color="secondary" style={{ textAlign: "right" }}>
+              monatliche Kosten
+            </Text>
+          </View>
+          <ChevronRight size={24} color="#888" style={{ marginLeft: 8 }} />
+        </Row>
+      </View>
+    </Row>
   );
 };

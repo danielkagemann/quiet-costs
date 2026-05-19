@@ -14,10 +14,14 @@ import { CardMonthlyCosts } from "./CardMonthlyCosts";
 import { Row } from "./base/Row";
 import { CardSpace } from "./CardSpace";
 import { FABButton } from "./base/FABButton";
-import Animated, { FadeIn, FlipInEasyY } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeInLeft,
+  FlipInEasyY,
+} from "react-native-reanimated";
 import { useIsFocused, useRouter } from "expo-router";
-import { Pressable, ScrollView } from "react-native";
-import { House, Rows3 } from "lucide-react-native";
+import { Pressable, ScrollView, View } from "react-native";
+import { CalendarDays, EyeOff, House, Rows3 } from "lucide-react-native";
 import { Colors } from "./base/Colors";
 
 export const OverviewScreen = () => {
@@ -85,6 +89,27 @@ export const OverviewScreen = () => {
               <Text size="sm">{spaces.length} Spaces</Text>
             </Row>
           </Row>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: Colors.border,
+              marginVertical: 6,
+            }}
+          />
+          <Row justify="between" gap={16}>
+            <Row gap={8}>
+              <CalendarDays color={Colors.primary} size={14} />
+              <Text size="sm">
+                {CostService.formatAmount(total * 12)} / Jahr
+              </Text>
+            </Row>
+            <Row gap={8}>
+              <EyeOff color={Colors.primary} size={14} />
+              <Text size="sm">
+                {costs.filter((c) => !c.isActive).length} Inaktiv
+              </Text>
+            </Row>
+          </Row>
         </Card>
         <VSpace size={8} />
         <CardMonthlyCosts total={total} />
@@ -104,25 +129,38 @@ export const OverviewScreen = () => {
         <Text size="md" color="secondary" weight="bold">
           SPACES
         </Text>
-        <Button color="secondary" onPress={() => router.push("/space/add")}>
-          +
-        </Button>
+        <Pressable onPress={() => router.push("/space/add")}>
+          <Text size="sm" color="primary">
+            Neuer Space
+          </Text>
+        </Pressable>
       </Row>
 
-      <VSpace size={4} />
+      <VSpace size={8} />
 
-      <ScrollView contentContainerStyle={{ gap: 8, flex: 1 }}>
-        {spaces.map((space: Space) => {
+      <ScrollView contentContainerStyle={{ gap: 16, flex: 1 }}>
+        {spaces.map((space: Space, index: number) => {
           const spaceCosts = costs.filter(
             (cost: Cost) => cost.spaceId === space.id,
           );
           return (
-            <Pressable
+            <Animated.View
               key={space.id}
-              onPress={() => router.push(`/space/${space.id}`)}
+              entering={FadeInLeft.delay(index * 100)}
             >
-              <CardSpace name={space.name} costs={spaceCosts} />
-            </Pressable>
+              <Pressable onPress={() => router.push(`/space/${space.id}`)}>
+                <CardSpace name={space.name} costs={spaceCosts} />
+              </Pressable>
+              {index < spaces.length - 1 && (
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: Colors.border,
+                    marginTop: 16,
+                  }}
+                />
+              )}
+            </Animated.View>
           );
         })}
       </ScrollView>

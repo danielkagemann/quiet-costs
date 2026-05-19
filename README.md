@@ -2,7 +2,7 @@
 
 Track where your monthly/yearly payments go.
 
-A React Native app built with **Expo**, **Expo Router**, **NativeWind** (Tailwind CSS), and **expo-sqlite** for on-device storage.
+A React Native app built with **Expo**, **Expo Router** and **expo-sqlite** for on-device storage.
 
 ## Features
 
