@@ -46,7 +46,7 @@ export default function SpaceAddScreen() {
           sub="Füge einen neuen Space hinzu, um Kosten an einen bestimmten Standort zuzuordnen"
         />
 
-        <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16, gap: 8 }}>
           <Headline>Informationen zum Space</Headline>
 
           <Label>

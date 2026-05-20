@@ -6,6 +6,7 @@ import { Row } from "./base/Row";
 import { View } from "react-native";
 import { CostService } from "@/services/cost.service";
 import { ChevronRight } from "lucide-react-native";
+import { Colors } from "./base/Colors";
 
 interface CardSpaceProps {
   name: string;
@@ -20,6 +21,7 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
           {name}
         </Text>
         <VSpace size={4} />
+
         <Text color="secondary" size="sm">
           Noch keine laufenden Kosten.
         </Text>

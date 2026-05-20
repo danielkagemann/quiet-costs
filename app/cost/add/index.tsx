@@ -165,7 +165,10 @@ export default function AddCostScreen() {
           sub="Wiederkehrende Kosten hinzufügen"
         />
 
-        <ScrollView contentContainerStyle={{ padding: 16, gap: 8 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ padding: 16, gap: 8, paddingBottom: 64 }}
+        >
           {/* Name & amount & billing */}
           <Headline>Allgemein</Headline>
           <Label>Benenne die Ausgabe, z.B. Netflix</Label>

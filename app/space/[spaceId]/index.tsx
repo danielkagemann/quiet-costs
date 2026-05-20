@@ -67,8 +67,14 @@ export default function SpaceDetails() {
         title={space ? space.name : "Lade Space..."}
         sub="Alle Kosten für diesen Space auf einen Blick."
       />
-      <ScrollView
-        style={{ flex: 1, flexDirection: "column", gap: 12, padding: 16 }}
+      <ScrollView showsVerticalScrollIndicator={false}
+        style={{
+          flex: 1,
+          flexDirection: "column",
+          gap: 12,
+          padding: 16,
+          paddingBottom: 64,
+        }}
       >
         {/* overview card */}
         <Card color="primary" padding={12} radius={8} style={{ gap: 12 }}>

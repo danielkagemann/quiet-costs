@@ -138,7 +138,7 @@ export const OverviewScreen = () => {
 
       <VSpace size={8} />
 
-      <ScrollView contentContainerStyle={{ gap: 16, flex: 1 }}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, flex: 1 }}>
         {spaces.map((space: Space, index: number) => {
           const spaceCosts = costs.filter(
             (cost: Cost) => cost.spaceId === space.id,
