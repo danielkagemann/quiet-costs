@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiet Costs</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --indigo: #5b5bd6;
+        --indigo-bg: #ededfc;
+        --text: #1a1a2e;
+        --muted: #8a8a9a;
+        --border: #e8e8f0;
+        --surface: #f7f7fb;
+        --white: #ffffff;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: -apple-system, sans-serif;
+        font-weight: 300;
+        background: var(--white);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 32px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+      }
+      .logo {
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        color: var(--text);
+      }
+      .logo span {
+        color: var(--indigo);
+      }
+      .nav-link {
+        font-size: 13px;
+        font-weight: 400;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-link:hover {
+        color: var(--text);
+      }
+      .nav-btn {
+        background: var(--indigo);
+        color: #fff;
+        padding: 9px 20px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 400;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .nav-btn:hover {
+        opacity: 0.85;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+
+      /* HERO */
+      .hero {
+        padding: 160px 32px 100px;
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+      .hero-eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: var(--indigo);
+        text-transform: uppercase;
+        font-weight: 400;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 38px;
+        font-weight: 300;
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        margin-bottom: 20px;
+      }
+      h1 strong {
+        font-weight: 500;
+      }
+      .hero-sub {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--muted);
+        font-weight: 300;
+        margin-bottom: 36px;
+        max-width: 360px;
+      }
+      .hero-cta {
+        display: inline-block;
+        background: var(--indigo);
+        color: #fff;
+        padding: 13px 28px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: none;
+        transition: opacity 0.2s;
+      }
+      .hero-cta:hover {
+        opacity: 0.85;
+      }
+
+      /* PHONE */
+      .phone-wrap {
+        display: flex;
+        justify-content: center;
+      }
+      .phone {
+        width: 230px;
+        border-radius: 32px;
+        box-shadow:
+          0 2px 40px rgba(0, 0, 0, 0.08),
+          0 0 0 1px rgba(0, 0, 0, 0.04);
+        padding: 16px;
+        background: var(--white);
+      }
+      .phone img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .p-logo {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        margin-bottom: 20px;
+      }
+      .p-logo span {
+        color: var(--indigo);
+      }
+      .p-label {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 300;
+        margin-bottom: 4px;
+      }
+      .p-amount {
+        font-size: 30px;
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .p-sub {
+        font-size: 11px;
+        color: var(--indigo);
+        font-weight: 400;
+        margin-bottom: 16px;
+      }
+      .p-stats {
+        display: flex;
+        gap: 0;
+        background: var(--surface);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+      .p-stat {
+        flex: 1;
+        padding: 10px 12px;
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+      .p-stat strong {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .p-stat:first-child {
+        border-right: 1px solid var(--border);
+      }
+      .p-sec {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        color: var(--indigo);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+      .p-card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+      .p-card-left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .p-icon {
+        width: 28px;
+        height: 28px;
+        background: var(--indigo-bg);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .p-icon svg {
+        width: 14px;
+        height: 14px;
+        stroke: var(--indigo);
+        fill: none;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .p-name {
+        font-size: 11px;
+        font-weight: 500;
+      }
+      .p-entries {
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+      .p-eur {
+        font-size: 11px;
+        font-weight: 500;
+        text-align: right;
+      }
+      .p-period {
+        font-size: 10px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+
+      /* DIVIDER */
+      .divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 0 32px;
+      }
+
+      /* FEATURES */
+      .features {
+        padding: 100px 32px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .section-tag {
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        color: var(--indigo);
+        text-transform: uppercase;
+        font-weight: 400;
+        margin-bottom: 16px;
+      }
+      h2 {
+        font-size: 28px;
+        font-weight: 300;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+        margin-bottom: 56px;
+        max-width: 420px;
+      }
+      h2 strong {
+        font-weight: 500;
+      }
+      .feat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+      }
+      .feat-item {
+        background: var(--surface);
+        padding: 28px 24px;
+        transition: background 0.2s;
+      }
+      .feat-item:first-child {
+        border-radius: 16px 0 0 16px;
+      }
+      .feat-item:last-child {
+        border-radius: 0 16px 16px 0;
+      }
+      .feat-item:hover {
+        background: var(--indigo-bg);
+      }
+      .feat-num {
+        font-size: 11px;
+        color: var(--indigo);
+        font-weight: 400;
+        letter-spacing: 0.04em;
+        margin-bottom: 20px;
+      }
+      .feat-title {
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 10px;
+      }
+      .feat-desc {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.65;
+        font-weight: 300;
+      }
+
+      /* DETAIL SECTION */
+      .detail {
+        padding: 100px 32px;
+        max-width: 1000px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .detail-content {
+        padding-top: 8px;
+      }
+      .detail h2 {
+        margin-bottom: 20px;
+      }
+      .detail-sub {
+        font-size: 15px;
+        color: var(--muted);
+        line-height: 1.75;
+        font-weight: 300;
+        margin-bottom: 40px;
+      }
+      .category-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cat-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 16px;
+        background: var(--surface);
+        border-radius: 12px;
+        transition: background 0.2s;
+      }
+      .cat-row:hover {
+        background: var(--indigo-bg);
+      }
+      .cat-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .cat-icon {
+        width: 34px;
+        height: 34px;
+        background: var(--indigo-bg);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cat-icon svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--indigo);
+        fill: none;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .cat-name {
+        font-size: 14px;
+        font-weight: 500;
+      }
+      .cat-count {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+      .cat-right {
+        text-align: right;
+      }
+      .cat-amt {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--indigo);
+      }
+      .cat-per {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+      .insight-card {
+        background: var(--indigo-bg);
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        margin-top: 8px;
+      }
+      .insight-icon {
+        width: 34px;
+        height: 34px;
+        background: rgba(91, 91, 214, 0.15);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .insight-icon svg {
+        width: 16px;
+        height: 16px;
+        stroke: var(--indigo);
+        fill: none;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .insight-text {
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--text);
+        font-weight: 300;
+      }
+      .insight-text strong {
+        font-weight: 500;
+        color: var(--indigo);
+      }
+
+      /* CTA STRIP */
+      .cta-strip {
+        margin: 0 32px;
+        border-radius: 20px;
+        background: var(--surface);
+        padding: 64px 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 40px;
+      }
+      .cta-strip h2 {
+        margin-bottom: 0;
+        max-width: 380px;
+      }
+      .cta-btns {
+        display: flex;
+        gap: 12px;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+      }
+      .store-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 11px 18px;
+        text-decoration: none;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 400;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        background: var(--white);
+      }
+      .store-btn:hover {
+        border-color: var(--indigo);
+        background: var(--indigo-bg);
+      }
+      .store-btn svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 40px 32px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      footer .logo {
+        font-size: 12px;
+      }
+      footer p {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 300;
+      }
+
+      @media (max-width: 768px) {
+        .hero {
+          grid-template-columns: 1fr;
+          gap: 48px;
+          padding: 120px 20px 60px;
+        }
+        .phone-wrap {
+          order: -1;
+        }
+        .features {
+          padding: 60px 20px;
+        }
+        .feat-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .feat-item:first-child {
+          border-radius: 16px 0 0 0;
+        }
+        .feat-item:nth-child(2) {
+          border-radius: 0 16px 0 0;
+        }
+        .feat-item:nth-child(3) {
+          border-radius: 0 0 0 16px;
+        }
+        .feat-item:last-child {
+          border-radius: 0 0 16px 0;
+        }
+        .detail {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding: 60px 20px;
+        }
+        .cta-strip {
+          flex-direction: column;
+          margin: 0 20px;
+          padding: 40px 28px;
+        }
+        nav {
+          padding: 16px 20px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .divider {
+          margin: 0 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">QUIET <span>COSTS</span></div>
+      <div class="nav-links">
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#spaces" class="nav-link">Spaces</a>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <p class="hero-eyebrow fu">Persönliche Finanzübersicht</p>
+        <h1 class="fu">
+          Verstehe, was<br />
+          dein <strong>Alltag</strong><br />wirklich kostet.
+        </h1>
+        <p class="hero-sub fu">
+          Ob Zuhause, Ferienhaus oder digitales Leben – behalte wiederkehrende
+          Kosten pro Ort und Kategorie im Blick.
+        </p>
+      </div>
+
+      <div class="phone-wrap fu">
+        <div class="phone">
+          <img src="screen.webp" alt="App Screenshot" />
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+      <p class="section-tag fu">Was Quiet Costs kann</p>
+      <h2 class="fu">
+        Alles was du brauchst, <strong>nichts was du nicht brauchst.</strong>
+      </h2>
+      <div class="feat-grid">
+        <div class="feat-item fu">
+          <div class="feat-num">01</div>
+          <div class="feat-title">Abos & Fixkosten</div>
+          <div class="feat-desc">
+            Alle wiederkehrenden Ausgaben an einem Ort – übersichtlich und immer
+            aktuell.
+          </div>
+        </div>
+        <div class="feat-item fu">
+          <div class="feat-num">02</div>
+          <div class="feat-title">Spaces</div>
+          <div class="feat-desc">
+            Kosten nach Orten und Lebensbereichen sortieren – Zuhause, Urlaub,
+            digital.
+          </div>
+        </div>
+        <div class="feat-item fu">
+          <div class="feat-num">03</div>
+          <div class="feat-title">Monats- & Jahresvergleich</div>
+          <div class="feat-desc">
+            Monatliche und jährliche Belastungen im direkten Vergleich sehen.
+          </div>
+        </div>
+        <div class="feat-item fu">
+          <div class="feat-num">04</div>
+          <div class="feat-title">Kategorien</div>
+          <div class="feat-desc">
+            Versicherungen, Streaming, Haus – strukturiert nach dem, was
+            wirklich zählt.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <!-- DETAIL -->
+    <section class="detail" id="spaces">
+      <div>
+        <p class="section-tag fu">Space-Ansicht</p>
+        <div class="category-list fu">
+          <div class="cat-row">
+            <div class="cat-left">
+              <div class="cat-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+              </div>
+              <div>
+                <div class="cat-name">Haus & Instandhaltung</div>
+                <div class="cat-count">2 Kosten</div>
+              </div>
+            </div>
+            <div class="cat-right">
+              <div class="cat-amt">126,90 €</div>
+              <div class="cat-per">pro Monat</div>
+            </div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-left">
+              <div class="cat-icon">
+                <svg viewBox="0 0 24 24">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                  <line x1="8" y1="21" x2="16" y2="21" />
+                  <line x1="12" y1="17" x2="12" y2="21" />
+                </svg>
+              </div>
+              <div>
+                <div class="cat-name">Streaming & Medien</div>
+                <div class="cat-count">2 Kosten</div>
+              </div>
+            </div>
+            <div class="cat-right">
+              <div class="cat-amt">32,48 €</div>
+              <div class="cat-per">pro Monat</div>
+            </div>
+          </div>
+          <div class="cat-row">
+            <div class="cat-left">
+              <div class="cat-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <div>
+                <div class="cat-name">Versicherung</div>
+                <div class="cat-count">1 Kosten</div>
+              </div>
+            </div>
+            <div class="cat-right">
+              <div class="cat-amt">82,34 €</div>
+              <div class="cat-per">pro Monat</div>
+            </div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon">
+              <svg viewBox="0 0 24 24">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+            </div>
+            <div class="insight-text">
+              Versicherungen machen <strong>34 %</strong> deiner monatlichen
+              Kosten in diesem Space aus.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-content">
+        <h2 class="fu">Jeden Space <strong>vollständig im Blick.</strong></h2>
+        <p class="detail-sub fu">
+          Für jeden Ort siehst du auf einen Blick, was monatlich anfällt –
+          gegliedert nach Kategorien, mit automatischen Insights.
+        </p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="logo">QUIET <span>COSTS</span></div>
+      <p>© 2026 Quiet Costs</p>
+    </footer>
+  </body>
+</html>
