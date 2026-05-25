@@ -22,6 +22,7 @@ export const FABButton = ({ onPress }: FABButtonProps) => {
       }}
     >
       <Pressable
+        accessibilityLabel="Kosten hinzufügen"
         onPress={onPress}
         style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
       >

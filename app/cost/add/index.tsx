@@ -5,6 +5,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
@@ -180,6 +181,33 @@ export default function AddCostScreen() {
       .finally(() => setWorking(false));
   }
 
+  /**
+   * render save
+   * @returns
+   */
+  function renderSaveButton() {
+    if (working) {
+      return (
+        <ActivityIndicator color={Colors.primary} style={{ marginTop: 16 }} />
+      );
+    }
+
+    if (!CostService.isValid(cost)) {
+      return (
+        <InfoBox
+          title="Speichern"
+          description="Bitte fülle alle Pflichtfelder aus."
+        />
+      );
+    }
+
+    return (
+      <Button color="primary" size="lg" radius="lg" onPress={onSave}>
+        Speichern
+      </Button>
+    );
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -188,7 +216,7 @@ export default function AddCostScreen() {
       >
         {/*header*/}
         <TopNavigation
-          title="Neuer Kostenpunkt"
+          title={isEditing ? "Kostenpunkt bearbeiten" : "Neuer Kostenpunkt"}
           sub="Wiederkehrende Kosten hinzufügen"
         />
 
@@ -268,16 +296,7 @@ export default function AddCostScreen() {
           <VSpace size={16} />
 
           {/* save button */}
-          {CostService.isValid(cost) ? (
-            <Button color="primary" size="lg" radius="lg" onPress={onSave}>
-              Speichern
-            </Button>
-          ) : (
-            <InfoBox
-              title="Speichern"
-              description="Bitte fülle alle Pflichtfelder aus."
-            />
-          )}
+          {renderSaveButton()}
 
           {/* delete button: only if in editing mode */}
           {isEditing && (

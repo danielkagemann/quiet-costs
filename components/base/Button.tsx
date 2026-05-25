@@ -33,6 +33,8 @@ export const Button = ({
 
   return (
     <Pressable
+      role="button"
+      accessibilityLabel={children}
       onPress={onPress}
       style={[
         { backgroundColor: colorMap[color] },

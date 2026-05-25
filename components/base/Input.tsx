@@ -26,6 +26,7 @@ export const Input = ({
 }: InputProps) => {
   return (
     <TextInput
+      accessibilityLabel={placeholder}
       placeholder={placeholder}
       value={value}
       inputMode={inputMode}

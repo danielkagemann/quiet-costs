@@ -8,7 +8,12 @@ interface ToggleProps {
 
 export const Toggle = ({ value, onChange }: ToggleProps) => {
   return (
-    <Pressable onPress={() => onChange(!value)}>
+    <Pressable
+      onPress={() => onChange(!value)}
+      role="switch"
+      accessibilityState={{ checked: value }}
+      accessibilityLabel="Wert wechseln"
+    >
       <View
         style={{
           width: 32,

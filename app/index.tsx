@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Storage } from "@/utils/storage";
 import { Configuration } from "@/utils/configuration";
 import { OverviewScreen } from "@/components/OverviewScreen";
+import { Loading } from "@/components/Loading";
 
 export default function HomeScreen() {
   const [welcomeSeen, setWelcomeSeen] = useState<boolean | null>(null);
@@ -13,7 +14,7 @@ export default function HomeScreen() {
     });
   }, []);
 
-  if (welcomeSeen === null) return null;
+  if (welcomeSeen === null) return <Loading />;
 
   if (!welcomeSeen) {
     return (
