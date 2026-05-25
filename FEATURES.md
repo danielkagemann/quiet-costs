@@ -22,8 +22,6 @@
 
 [Data / Insight] — No createdAt on costs — impossible to show trends, spending by month, or renewal dates. Adding a createdAt INTEGER (Unix timestamp) via migration unlocks an entire analytical layer.
 
-[Testing] — CostService, SpaceService, CostDetector are pure TypeScript with no side effects — ideal unit test targets with zero mocking infrastructure needed. These services have real edge cases (inactive costs, unknown billing cycles, keyword matching) currently verified only manually.
-
 [Internationalization] — Currency is hardcoded to EUR in CostService.formatAmount. A single currency config key in AsyncStorage with EUR fallback would meaningfully broaden the app's audience.
 
 [Component] — Button only accepts string children. Widening to React.ReactNode enables icon+label buttons without breaking any existing usage.
