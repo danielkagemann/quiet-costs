@@ -7,7 +7,7 @@ interface TextProps {
   children: React.ReactNode;
   size?: TextSize;
   color?: keyof typeof Colors;
-  weight?: "normal" | "bold" | "semi-bold";
+  weight?: "light" | "normal" | "bold" | "semi-bold";
   style?: StyleProp<TextStyle>;
   numberOfLines?: number;
 }
@@ -24,8 +24,9 @@ const sizeMap: Record<TextSize, number> = {
 
 const weightMap: Record<
   NonNullable<TextProps["weight"]>,
-  "400" | "600" | "700"
+  "300" | "400" | "600" | "700"
 > = {
+  light: "300",
   normal: "400",
   "semi-bold": "600",
   bold: "700",

@@ -57,9 +57,18 @@ export default function SpaceDetails() {
     const [catId, percentage] = categoryWithMostCosts;
 
     return (
-      <Text size="sm" color="danger" style={{ marginBottom: 16 }}>
-        Deine teuerste Kategorie ist {Configuration.categories[catId]} mit{" "}
-        {percentage.toFixed(2)}% der Gesamtkosten.
+      <Text
+        size="sm"
+        color="danger"
+        weight="light"
+        style={{ marginBottom: 16 }}
+      >
+        Deine teuerste Kategorie ist{" "}
+        {Configuration.categories[Number(catId as string)]} mit{" "}
+        <Text size="sm" color="danger" weight="bold">
+          {percentage.toFixed(2)}%
+        </Text>{" "}
+        der Gesamtkosten.
       </Text>
     );
   }

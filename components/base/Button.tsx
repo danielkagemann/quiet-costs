@@ -5,8 +5,8 @@ interface ButtonProps {
   children: string;
   onPress: () => void;
   color?: "primary" | "secondary" | "light" | "outline" | "empty" | "danger";
-  size?: "sm" | "md" | "lg";
-  radius?: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg" | "xl";
+  radius?: "sm" | "md" | "lg" | "xl";
 }
 
 export const Button = ({
@@ -29,6 +29,7 @@ export const Button = ({
     sm: 4,
     md: 8,
     lg: 12,
+    xl: 32,
   };
 
   return (
@@ -62,6 +63,7 @@ export const Button = ({
           size === "sm" && { fontSize: 13 },
           size === "md" && { fontSize: 17 },
           size === "lg" && { fontSize: 20 },
+          size === "xl" && { fontSize: 24 },
           { fontWeight: "400" },
         ]}
       >

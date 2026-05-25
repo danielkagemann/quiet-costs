@@ -209,7 +209,7 @@ export default function AddCostScreen() {
     }
 
     return (
-      <Button color="primary" size="lg" radius="lg" onPress={onSave}>
+      <Button color="primary" size="lg" radius="xl" onPress={onSave}>
         Speichern
       </Button>
     );
