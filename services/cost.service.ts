@@ -9,7 +9,12 @@ export const CostService = {
   },
 
   isValid(cost: Cost) {
-    return cost.name.trim() !== "" && cost.amount > 0 && cost.spaceId > 0;
+    return (
+      cost.name.trim() !== "" &&
+      cost.amount > 0 &&
+      cost.spaceId > 0 &&
+      cost.categoryId > 0
+    );
   },
 
   getBillingCycle(cost: Cost) {

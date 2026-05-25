@@ -45,8 +45,8 @@ export default function AddCostScreen() {
     amount: 0,
     billingCycle: "monthly",
     isActive: true,
-    categoryId: 0,
-    spaceId: 0,
+    categoryId: -1,
+    spaceId: -1,
   });
   const [working, setWorking] = useState<boolean>(false);
 
@@ -56,8 +56,10 @@ export default function AddCostScreen() {
     DatabaseService.getSpaces(db)
       .then((list) => {
         setSpaces(list);
-        // pre-select the first space if available
-        if (list.length > 0) setCost((c) => ({ ...c, spaceId: list[0].id }));
+        // if we have only ONE space we preselect it
+        if (list.length === 1) {
+          setCost((c) => ({ ...c, spaceId: list[0].id }));
+        }
       })
       .catch(() =>
         Alert.alert("Fehler", "Spaces konnten nicht geladen werden."),
