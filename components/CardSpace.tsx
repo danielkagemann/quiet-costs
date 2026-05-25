@@ -1,12 +1,10 @@
 import { Cost } from "@/types/costs";
-import { Card } from "./base/Card";
 import { Text } from "./base/Text";
 import { VSpace } from "./base/VSpace";
 import { Row } from "./base/Row";
 import { View } from "react-native";
 import { CostService } from "@/services/cost.service";
 import { ChevronRight } from "lucide-react-native";
-import { Colors } from "./base/Colors";
 
 interface CardSpaceProps {
   name: string;
