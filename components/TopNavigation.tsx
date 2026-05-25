@@ -18,7 +18,11 @@ export const TopNavigation = ({ title, sub }: TopNavigationProps) => {
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <Row justify="start" gap={8} style={{ width: windowWidth - 48 }}>
-        <Pressable onPress={() => router.back()}>
+        <Pressable
+          onPress={() => router.back()}
+          accessibilityLabel="Zurück"
+          accessibilityRole="button"
+        >
           <ChevronLeft size={24} color={Colors.text} />
         </Pressable>
         <View>

@@ -120,7 +120,12 @@ export const OverviewScreen = () => {
           </Row>
         </Card>
         <VSpace size={8} />
-        <CardMonthlyCosts total={total} />
+        <CardMonthlyCosts
+          total={total}
+          chartData={costs
+            .slice(-5)
+            .map((c, i) => ({ timestamp: i, value: c.amount }))}
+        />
       </>
     );
   }

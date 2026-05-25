@@ -263,6 +263,7 @@ export default function AddCostScreen() {
             <Row justify="between">
               <Label>Ist es noch aktiv?</Label>
               <Toggle
+                ariaLabel="Aktivitätsstatus des Kostenpunkts"
                 value={cost.isActive}
                 onChange={(value) => setCost({ ...cost, isActive: value })}
               />

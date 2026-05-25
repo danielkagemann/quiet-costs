@@ -3,16 +3,17 @@ import { Colors } from "./Colors";
 
 interface ToggleProps {
   value: boolean;
+  ariaLabel?: string;
   onChange: (value: boolean) => void;
 }
 
-export const Toggle = ({ value, onChange }: ToggleProps) => {
+export const Toggle = ({ value, ariaLabel, onChange }: ToggleProps) => {
   return (
     <Pressable
       onPress={() => onChange(!value)}
       role="switch"
       accessibilityState={{ checked: value }}
-      accessibilityLabel="Wert wechseln"
+      accessibilityLabel={ariaLabel}
     >
       <View
         style={{

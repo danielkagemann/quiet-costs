@@ -4,15 +4,7 @@
 
 [Code Quality] — Billing cycle labels are duplicated inline in index.tsx as a ternary chain — CostService.getBillingCycle() already does this. Remove the duplication.
 
-[Bug] — Number(param.spaceId) in SpaceDetails has no isNaN guard, unlike the equivalent param.id parsing in the cost screen. Passing NaN to the DB produces silent empty results.
-
-[Accessibility] — Toggle's accessibilityLabel is always "Wert wechseln" — meaningless to VoiceOver/TalkBack. Make it a required prop from the call site.
-
-[Accessibility] — TopNavigation back button has no accessibilityLabel or role. Add accessibilityLabel="Zurück" and role="button".
-
 ## Mid Term (weeks)
-
-[Feature — High Impact] — The SVG chart in CardMonthlyCosts is static and hardcoded, showing a downward trend regardless of actual data. It actively misleads users. Remove it or replace it with a real sparkline once createdAt timestamps exist on costs.
 
 [Feature] — No way to edit or delete a space. Once created, a space is permanent. Add an edit flow (reuse the add-space form) and a delete flow with a warning about orphaned costs.
 

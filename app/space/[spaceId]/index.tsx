@@ -8,13 +8,15 @@ import { Space } from "@/types/spaces";
 import { useIsFocused, useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import { Alert, ScrollView, useWindowDimensions, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
 import { CardCategory } from "@/components/CardCategory";
 import { FABButton } from "@/components/base/FABButton";
 import { Configuration } from "@/utils/configuration";
+import { Colors } from "@/components/base/Colors";
+import { Coins } from "lucide-react-native";
 
 export default function SpaceDetails() {
   // hooks
@@ -22,6 +24,7 @@ export default function SpaceDetails() {
   const db = useSQLiteContext();
   const isInFocus = useIsFocused();
   const router = useRouter();
+  const { width: windowWidth } = useWindowDimensions();
 
   // states
   const [space, setSpace] = useState<Space | null>(null);
@@ -31,6 +34,11 @@ export default function SpaceDetails() {
     if (!db) return;
 
     const spaceId = Number(param.spaceId);
+    if (Number.isNaN(spaceId)) {
+      Alert.alert("Fehler", "Ungültige Space ID.");
+      router.back();
+      return;
+    }
     DatabaseService.getSpaceById(db, spaceId)
       .then(setSpace)
       .catch(() => Alert.alert("Fehler", "Space konnte nicht geladen werden."));
@@ -39,7 +47,7 @@ export default function SpaceDetails() {
       .catch(() =>
         Alert.alert("Fehler", "Kosten konnten nicht geladen werden."),
       );
-  }, [db, param.spaceId, isInFocus]);
+  }, [db, param.spaceId, router, isInFocus]);
 
   // derived state
   const groupedCosts: Record<string, Cost[]> =
@@ -57,19 +65,22 @@ export default function SpaceDetails() {
     const [catId, percentage] = categoryWithMostCosts;
 
     return (
-      <Text
-        size="sm"
-        color="danger"
-        weight="light"
-        style={{ marginBottom: 16 }}
-      >
-        Deine teuerste Kategorie ist{" "}
-        {Configuration.categories[Number(catId as string)]} mit{" "}
-        <Text size="sm" color="danger" weight="bold">
-          {percentage.toFixed(2)}%
-        </Text>{" "}
-        der Gesamtkosten.
-      </Text>
+      <Row justify="start" gap={16} style={{ width: windowWidth - 72 }}>
+        <Coins size={24} strokeWidth={1} color={Colors.danger} />
+        <Text
+          size="sm"
+          color="danger"
+          weight="light"
+          style={{ marginBottom: 16 }}
+        >
+          Deine teuerste Kategorie ist{" "}
+          {Configuration.categories[Number(catId as string)]} mit{" "}
+          <Text size="sm" color="danger" weight="bold">
+            {percentage.toFixed(2)}%
+          </Text>{" "}
+          der Gesamtkosten.
+        </Text>
+      </Row>
     );
   }
 
@@ -104,8 +115,6 @@ export default function SpaceDetails() {
             zu sehen.
           </Text>
         </Card>
-
-        <VSpace size={8} />
 
         {renderExpensiveCategoryInfo()}
 
