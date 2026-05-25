@@ -13,7 +13,7 @@ export const CostService = {
       cost.name.trim() !== "" &&
       cost.amount > 0 &&
       cost.spaceId > 0 &&
-      cost.categoryId > 0
+      cost.categoryId >= 0
     );
   },
 

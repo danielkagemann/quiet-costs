@@ -2,7 +2,7 @@ import { Pressable, Text } from "react-native";
 import { Colors } from "./Colors";
 
 interface ButtonProps {
-  children: string;
+  children: React.ReactNode | string;
   onPress: () => void;
   color?: "primary" | "secondary" | "light" | "outline" | "empty" | "danger";
   size?: "sm" | "md" | "lg" | "xl";
@@ -35,7 +35,7 @@ export const Button = ({
   return (
     <Pressable
       role="button"
-      accessibilityLabel={children}
+      accessibilityLabel={typeof children === "string" ? children : undefined}
       onPress={onPress}
       style={[
         { backgroundColor: colorMap[color] },

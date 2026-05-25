@@ -93,13 +93,12 @@ export default function SpaceDetails() {
       />
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{
-          flex: 1,
-          flexDirection: "column",
+        style={{ flex: 1 }}
+        contentContainerStyle={{
+          gap: 12,
           padding: 16,
-          paddingBottom: 64,
+          paddingBottom: 96,
         }}
-        contentContainerStyle={{ gap: 12 }}
       >
         {/* overview card */}
         <Card color="primary" padding={12} radius={8} style={{ gap: 12 }}>
