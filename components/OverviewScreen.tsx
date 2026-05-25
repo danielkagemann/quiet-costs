@@ -137,7 +137,11 @@ export const OverviewScreen = () => {
         <Text size="md" color="secondary" weight="bold">
           SPACES
         </Text>
-        <Pressable onPress={() => router.push("/space/add")}>
+        <Pressable
+          onPress={() => router.push("/space/add")}
+          role="button"
+          accessibilityLabel="Neuen Space hinzufügen"
+        >
           <Text size="sm" color="primary">
             Neuer Space
           </Text>
@@ -159,7 +163,11 @@ export const OverviewScreen = () => {
               key={space.id}
               entering={FadeInLeft.delay(index * 100)}
             >
-              <Pressable onPress={() => router.push(`/space/${space.id}`)}>
+              <Pressable
+                onPress={() => router.push(`/space/${space.id}`)}
+                role="button"
+                accessibilityLabel={`Space ${space.name} anzeigen`}
+              >
                 <CardSpace name={space.name} costs={spaceCosts} />
               </Pressable>
               {index < spaces.length - 1 && (

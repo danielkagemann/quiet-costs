@@ -76,10 +76,10 @@ export default function SpaceDetails() {
         style={{
           flex: 1,
           flexDirection: "column",
-          gap: 12,
           padding: 16,
           paddingBottom: 64,
         }}
+        contentContainerStyle={{ gap: 12 }}
       >
         {/* overview card */}
         <Card color="primary" padding={12} radius={8} style={{ gap: 12 }}>
@@ -111,7 +111,9 @@ export default function SpaceDetails() {
           ))}
         </View>
       </ScrollView>
-      <FABButton onPress={() => router.push("/cost/add")} />
+      <FABButton
+        onPress={() => router.push(`/cost/add?spaceId=${param.spaceId}`)}
+      />
     </SafeAreaView>
   );
 }

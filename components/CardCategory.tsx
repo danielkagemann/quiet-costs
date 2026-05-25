@@ -40,6 +40,8 @@ export const CardCategory = ({
     }
     return (
       <Pressable
+        role="button"
+        accessibilityLabel={`Kostenpunkt ${cost.name} mit Betrag ${amountText}`}
         key={cost.id}
         onPress={() => router.push(`/cost/add?id=${cost.id}`)}
       >
@@ -127,6 +129,8 @@ export const CardCategory = ({
   return (
     <>
       <Pressable
+        role="button"
+        accessibilityLabel={`Kategorie ${Configuration.categories[categoryId]}`}
         onPress={() => setIsExpanded((prev) => !prev)}
         style={{ paddingVertical: 4 }}
       >

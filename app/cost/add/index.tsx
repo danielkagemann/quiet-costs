@@ -79,7 +79,14 @@ export default function AddCostScreen() {
           );
       }
     }
-  }, [db, param.id]);
+    // check if we have a space predefined, if yes, set it as well
+    if (param.spaceId) {
+      const spaceId = Number.parseInt(param.spaceId as string);
+      if (!Number.isNaN(spaceId)) {
+        setCost((c) => ({ ...c, spaceId }));
+      }
+    }
+  }, [db, param.id, param.spaceId]);
 
   // derived state for editing mode
   const isEditing = cost.id !== 0;
