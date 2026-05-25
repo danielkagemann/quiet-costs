@@ -8,7 +8,7 @@ import { Space } from "@/types/spaces";
 import { useIsFocused, useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
@@ -31,10 +31,14 @@ export default function SpaceDetails() {
     if (!db) return;
 
     const spaceId = Number(param.spaceId);
-    DatabaseService.getSpaceById(db, spaceId).then(setSpace);
-    DatabaseService.getCostsForSpace(db, spaceId).then((data) => {
-      setCosts(data);
-    });
+    DatabaseService.getSpaceById(db, spaceId)
+      .then(setSpace)
+      .catch(() => Alert.alert("Fehler", "Space konnte nicht geladen werden."));
+    DatabaseService.getCostsForSpace(db, spaceId)
+      .then((data) => setCosts(data))
+      .catch(() =>
+        Alert.alert("Fehler", "Kosten konnten nicht geladen werden."),
+      );
   }, [db, param.spaceId, isInFocus]);
 
   // derived state
@@ -67,7 +71,8 @@ export default function SpaceDetails() {
         title={space ? space.name : "Lade Space..."}
         sub="Alle Kosten für diesen Space auf einen Blick."
       />
-      <ScrollView showsVerticalScrollIndicator={false}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
           flexDirection: "column",

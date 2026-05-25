@@ -20,7 +20,7 @@ import Animated, {
   FlipInEasyY,
 } from "react-native-reanimated";
 import { useIsFocused, useRouter } from "expo-router";
-import { Pressable, ScrollView, View } from "react-native";
+import { Alert, Pressable, ScrollView, View } from "react-native";
 import { CalendarDays, EyeOff, House, Rows3 } from "lucide-react-native";
 import { Colors } from "./base/Colors";
 
@@ -36,8 +36,16 @@ export const OverviewScreen = () => {
 
   useEffect(() => {
     if (!db) return;
-    DatabaseService.getSpaces(db).then(setSpaces);
-    DatabaseService.getCosts(db).then(setCosts);
+    DatabaseService.getSpaces(db)
+      .then(setSpaces)
+      .catch(() =>
+        Alert.alert("Fehler", "Spaces konnten nicht geladen werden."),
+      );
+    DatabaseService.getCosts(db)
+      .then(setCosts)
+      .catch(() =>
+        Alert.alert("Fehler", "Kosten konnten nicht geladen werden."),
+      );
   }, [db, isFocused]);
 
   /**
@@ -138,7 +146,10 @@ export const OverviewScreen = () => {
 
       <VSpace size={8} />
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 16, flex: 1 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ gap: 16, flex: 1 }}
+      >
         {spaces.map((space: Space, index: number) => {
           const spaceCosts = costs.filter(
             (cost: Cost) => cost.spaceId === space.id,

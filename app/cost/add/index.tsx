@@ -4,7 +4,13 @@ import { Space } from "@/types/spaces";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View,
+} from "react-native";
 import { Headline, Label, Text } from "@/components/base/Text";
 import { Input } from "@/components/base/Input";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -41,26 +47,35 @@ export default function AddCostScreen() {
     categoryId: 0,
     spaceId: 0,
   });
+  const [working, setWorking] = useState<boolean>(false);
 
   // initialize spaces
   useEffect(() => {
     if (!db) return;
-    DatabaseService.getSpaces(db).then((list) => {
-      setSpaces(list);
-      // pre-select the first space if available
-      if (list.length > 0) setCost((c) => ({ ...c, spaceId: list[0].id }));
-    });
+    DatabaseService.getSpaces(db)
+      .then((list) => {
+        setSpaces(list);
+        // pre-select the first space if available
+        if (list.length > 0) setCost((c) => ({ ...c, spaceId: list[0].id }));
+      })
+      .catch(() =>
+        Alert.alert("Fehler", "Spaces konnten nicht geladen werden."),
+      );
 
     // now check if we have an id param, if yes, we are in edit mode and need to load the cost
     if (param.id) {
       const costId = Number.parseInt(param.id as string);
       if (!Number.isNaN(costId)) {
-        DatabaseService.getCostById(db, costId).then((item) => {
-          if (item) {
-            setCost(item);
-            setAmountInput(item.amount.toString());
-          }
-        });
+        DatabaseService.getCostById(db, costId)
+          .then((item) => {
+            if (item) {
+              setCost(item);
+              setAmountInput(item.amount.toString());
+            }
+          })
+          .catch(() =>
+            Alert.alert("Fehler", "Kostenpunkt konnte nicht geladen werden."),
+          );
       }
     }
   }, [db, param.id]);
@@ -132,14 +147,22 @@ export default function AddCostScreen() {
    */
   function onSave() {
     if (!db) return;
+    setWorking(true);
+
     if (isEditing) {
-      DatabaseService.updateCost(db, cost).then(() => {
-        router.back();
-      });
+      DatabaseService.updateCost(db, cost)
+        .then(() => router.back())
+        .catch(() =>
+          Alert.alert("Fehler", "Kostenpunkt konnte nicht gespeichert werden."),
+        )
+        .finally(() => setWorking(false));
     } else {
-      DatabaseService.createCost(db, cost).then(() => {
-        router.back();
-      });
+      DatabaseService.createCost(db, cost)
+        .then(() => router.back())
+        .catch(() =>
+          Alert.alert("Fehler", "Kostenpunkt konnte nicht erstellt werden."),
+        )
+        .finally(() => setWorking(false));
     }
   }
 
@@ -148,9 +171,13 @@ export default function AddCostScreen() {
    */
   function onDelete() {
     if (!db) return;
-    DatabaseService.deleteCost(db, cost.id).then(() => {
-      router.back();
-    });
+    setWorking(true);
+    DatabaseService.deleteCost(db, cost.id)
+      .then(() => router.back())
+      .catch(() =>
+        Alert.alert("Fehler", "Kostenpunkt konnte nicht gelöscht werden."),
+      )
+      .finally(() => setWorking(false));
   }
 
   return (

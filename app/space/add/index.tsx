@@ -4,7 +4,12 @@ import { Space } from "@/types/spaces";
 import { useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@/components/base/Button";
 import { DatabaseService } from "@/services/database.service";
@@ -27,9 +32,11 @@ export default function SpaceAddScreen() {
 
   function onSave() {
     if (!db) return;
-    DatabaseService.addSpace(db, space).then(() => {
-      router.back();
-    });
+    DatabaseService.addSpace(db, space)
+      .then(() => router.back())
+      .catch(() =>
+        Alert.alert("Fehler", "Space konnte nicht gespeichert werden."),
+      );
   }
 
   // TODO add image
@@ -46,7 +53,10 @@ export default function SpaceAddScreen() {
           sub="Füge einen neuen Space hinzu, um Kosten an einen bestimmten Standort zuzuordnen"
         />
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ padding: 16, gap: 8 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ padding: 16, gap: 8 }}
+        >
           <Headline>Informationen zum Space</Headline>
 
           <Label>
