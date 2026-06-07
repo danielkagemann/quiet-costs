@@ -181,13 +181,29 @@ export default function AddCostScreen() {
    */
   function onDelete() {
     if (!db) return;
-    setWorking(true);
-    DatabaseService.deleteCost(db, cost.id)
-      .then(() => router.back())
-      .catch(() =>
-        Alert.alert("Fehler", "Kostenpunkt konnte nicht gelöscht werden."),
-      )
-      .finally(() => setWorking(false));
+    Alert.alert(
+      "Kostenpunkt löschen",
+      "Bist Du sicher? Diese Aktion kann nicht rückgängig gemacht werden.",
+      [
+        { text: "Abbrechen", style: "cancel" },
+        {
+          text: "Löschen",
+          style: "destructive",
+          onPress: () => {
+            setWorking(true);
+            DatabaseService.deleteCost(db, cost.id)
+              .then(() => router.back())
+              .catch(() =>
+                Alert.alert(
+                  "Fehler",
+                  "Kostenpunkt konnte nicht gelöscht werden.",
+                ),
+              )
+              .finally(() => setWorking(false));
+          },
+        },
+      ],
+    );
   }
 
   /**

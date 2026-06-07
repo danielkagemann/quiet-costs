@@ -1,12 +1,10 @@
 ## Short Term (days)
 
-[Data Safety] — onDelete fires immediately with no confirmation. A single Alert.alert before the DB call prevents irreversible accidental deletions. ← Most impactful quick win.
-
 [Code Quality] — Billing cycle labels are duplicated inline in index.tsx as a ternary chain — CostService.getBillingCycle() already does this. Remove the duplication.
 
 ## Mid Term (weeks)
 
-[Feature] — No way to edit or delete a space. Once created, a space is permanent. Add an edit flow (reuse the add-space form) and a delete flow with a warning about orphaned costs.
+[Feature] — No way delete a space. Once created, a space is permanent. Add an edit flow (reuse the add-space form) and a delete flow with a warning about orphaned costs.
 
 [Architecture — Critical] — The CREATE TABLE IF NOT EXISTS pattern cannot run migrations. Any future column addition will silently never apply to existing installs. Add PRAGMA user_version-based migration versioning now, while the schema is still small.
 
