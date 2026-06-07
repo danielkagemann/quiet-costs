@@ -8,7 +8,13 @@ import { Space } from "@/types/spaces";
 import { useIsFocused, useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import { Alert, ScrollView, useWindowDimensions, View } from "react-native";
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { VSpace } from "@/components/base/VSpace";
@@ -16,7 +22,7 @@ import { CardCategory } from "@/components/CardCategory";
 import { FABButton } from "@/components/base/FABButton";
 import { Configuration } from "@/utils/configuration";
 import { Colors } from "@/components/base/Colors";
-import { Coins } from "lucide-react-native";
+import { Coins, Pencil } from "lucide-react-native";
 
 export default function SpaceDetails() {
   // hooks
@@ -90,6 +96,15 @@ export default function SpaceDetails() {
       <TopNavigation
         title={space ? space.name : "Lade Space..."}
         sub="Alle Kosten für diesen Space auf einen Blick."
+        rightAction={
+          <Pressable
+            onPress={() => router.push(`/space/${param.spaceId}/edit`)}
+            accessibilityLabel="Space bearbeiten"
+            accessibilityRole="button"
+          >
+            <Pencil size={20} color={Colors.text} />
+          </Pressable>
+        }
       />
       <ScrollView
         showsVerticalScrollIndicator={false}

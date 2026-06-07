@@ -76,6 +76,13 @@ export const DatabaseService = {
       [name, description || "", imageData || null],
     );
   },
+  updateSpace: async (db: SQLiteDatabase, space: Space) => {
+    const { id, name, description, imageData } = space;
+    await db.runAsync(
+      "UPDATE space SET name = ?, description = ?, imageData = ? WHERE id = ?",
+      [name, description || "", imageData || null, id],
+    );
+  },
   getSpaceById: async (db: SQLiteDatabase, id: number) => {
     return await db.getFirstAsync<Space>(
       "SELECT * FROM space WHERE id = ?",

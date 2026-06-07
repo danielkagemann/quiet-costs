@@ -4,37 +4,46 @@ import { Row } from "./base/Row";
 import { Text } from "./base/Text";
 import { ChevronLeft } from "lucide-react-native";
 import { Colors } from "./base/Colors";
+import { ReactNode } from "react";
 
 interface TopNavigationProps {
   title: string;
   sub?: string;
+  rightAction?: ReactNode;
 }
 
-export const TopNavigation = ({ title, sub }: TopNavigationProps) => {
+export const TopNavigation = ({
+  title,
+  sub,
+  rightAction,
+}: TopNavigationProps) => {
   // hooks
   const router = useRouter();
   const { width: windowWidth } = useWindowDimensions();
 
   return (
     <View style={{ paddingHorizontal: 16 }}>
-      <Row justify="start" gap={8} style={{ width: windowWidth - 48 }}>
-        <Pressable
-          onPress={() => router.back()}
-          accessibilityLabel="Zurück"
-          accessibilityRole="button"
-        >
-          <ChevronLeft size={24} color={Colors.text} />
-        </Pressable>
-        <View>
-          <Text size="lg" weight="bold">
-            {title}
-          </Text>
-          {!!sub && (
-            <Text size="sm" color="secondary">
-              {sub}
+      <Row justify="between" gap={8} style={{ width: windowWidth - 32 }}>
+        <Row justify="start" gap={8} style={{ flex: 1 }}>
+          <Pressable
+            onPress={() => router.back()}
+            accessibilityLabel="Zurück"
+            accessibilityRole="button"
+          >
+            <ChevronLeft size={24} color={Colors.text} />
+          </Pressable>
+          <View style={{ flex: 1 }}>
+            <Text size="lg" weight="bold">
+              {title}
             </Text>
-          )}
-        </View>
+            {!!sub && (
+              <Text size="sm" color="secondary">
+                {sub}
+              </Text>
+            )}
+          </View>
+        </Row>
+        {!!rightAction && rightAction}
       </Row>
     </View>
   );
