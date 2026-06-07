@@ -1,5 +1,5 @@
 import { Pressable, View } from "react-native";
-import { Colors } from "./Colors";
+import { useColors } from "./useColors";
 import { Text } from "./Text";
 
 interface FABButtonProps {
@@ -7,6 +7,7 @@ interface FABButtonProps {
 }
 
 export const FABButton = ({ onPress }: FABButtonProps) => {
+  const colors = useColors();
   return (
     <View
       style={{
@@ -15,7 +16,7 @@ export const FABButton = ({ onPress }: FABButtonProps) => {
         right: 16,
         left: 16,
         borderRadius: 28,
-        backgroundColor: Colors.primary,
+        backgroundColor: colors.primary,
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 16,

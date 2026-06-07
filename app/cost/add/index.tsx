@@ -25,7 +25,7 @@ import { VSpace } from "@/components/base/VSpace";
 import { Toggle } from "@/components/base/Toggle";
 import { Card } from "@/components/base/Card";
 import { Trash } from "lucide-react-native";
-import { Colors } from "@/components/base/Colors";
+import { useColors } from "@/components/base/useColors";
 import { Chip } from "@/components/base/Chip";
 import { CostDetector } from "@/services/costdetector.service";
 
@@ -49,6 +49,7 @@ export default function AddCostScreen() {
     spaceId: -1,
   });
   const [working, setWorking] = useState<boolean>(false);
+  const colors = useColors();
 
   // initialize spaces
   useEffect(() => {
@@ -213,7 +214,7 @@ export default function AddCostScreen() {
   function renderSaveButton() {
     if (working) {
       return (
-        <ActivityIndicator color={Colors.primary} style={{ marginTop: 16 }} />
+        <ActivityIndicator color={colors.primary} style={{ marginTop: 16 }} />
       );
     }
 
@@ -332,12 +333,12 @@ export default function AddCostScreen() {
                 <Row gap={8}>
                   <View
                     style={{
-                      backgroundColor: Colors.danger,
+                      backgroundColor: colors.danger,
                       padding: 8,
                       borderRadius: 20,
                     }}
                   >
-                    <Trash size={14} color={Colors.white} />
+                    <Trash size={14} color={colors.white} />
                   </View>
                   <Text color="danger" weight="bold">
                     Kostenpunkt löschen

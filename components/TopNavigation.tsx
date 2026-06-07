@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { Row } from "./base/Row";
 import { Text } from "./base/Text";
 import { ChevronLeft } from "lucide-react-native";
-import { Colors } from "./base/Colors";
+import { useColors } from "./base/useColors";
 import { ReactNode } from "react";
 
 interface TopNavigationProps {
@@ -20,6 +20,7 @@ export const TopNavigation = ({
   // hooks
   const router = useRouter();
   const { width: windowWidth } = useWindowDimensions();
+  const colors = useColors();
 
   return (
     <View style={{ paddingHorizontal: 16 }}>
@@ -30,7 +31,7 @@ export const TopNavigation = ({
             accessibilityLabel="Zurück"
             accessibilityRole="button"
           >
-            <ChevronLeft size={24} color={Colors.text} />
+            <ChevronLeft size={24} color={colors.text} />
           </Pressable>
           <View style={{ flex: 1 }}>
             <Text size="lg" weight="bold">

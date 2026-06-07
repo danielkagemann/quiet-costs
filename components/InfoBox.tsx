@@ -3,7 +3,7 @@ import { Card } from "./base/Card";
 import { Text } from "./base/Text";
 import { VSpace } from "./base/VSpace";
 import { Row } from "./base/Row";
-import { Colors } from "./base/Colors";
+import { useColors } from "./base/useColors";
 import { View } from "react-native";
 
 interface InfoBoxProps {
@@ -12,10 +12,11 @@ interface InfoBoxProps {
 }
 
 export const InfoBox = ({ title, description }: InfoBoxProps) => {
+  const colors = useColors();
   return (
     <Card color="primary" padding={12} radius={6}>
       <Row justify="start" gap={8}>
-        <Info color={Colors.primary} size={18} />
+        <Info color={colors.primary} size={18} />
         <View>
           <Text size="sm" color="primary" weight="bold">
             {title}

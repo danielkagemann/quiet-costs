@@ -1,12 +1,13 @@
 import { Text as RNText, TextStyle, StyleProp } from "react-native";
-import { Colors } from "./Colors";
+import { ColorPalette } from "./Colors";
+import { useColors } from "./useColors";
 
 type TextSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
 
 interface TextProps {
   children: React.ReactNode;
   size?: TextSize;
-  color?: keyof typeof Colors;
+  color?: keyof ColorPalette;
   weight?: "light" | "normal" | "bold" | "semi-bold";
   style?: StyleProp<TextStyle>;
   numberOfLines?: number;
@@ -40,13 +41,14 @@ export const Text = ({
   style,
   numberOfLines,
 }: TextProps) => {
+  const colors = useColors();
   return (
     <RNText
       numberOfLines={numberOfLines}
       style={[
         {
           fontSize: sizeMap[size],
-          color: Colors[color],
+          color: colors[color],
           fontWeight: weightMap[weight],
         },
         style,

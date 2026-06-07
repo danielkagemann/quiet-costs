@@ -1,5 +1,5 @@
 import { StyleProp, View, ViewStyle } from "react-native";
-import { Colors } from "./Colors";
+import { useColors } from "./useColors";
 import { Text } from "./Text";
 
 interface CardProps {
@@ -17,9 +17,10 @@ export const Card = ({
   style,
   children,
 }: CardProps) => {
+  const colors = useColors();
   const bgColorMap: Record<CardProps["color"], string> = {
-    primary: Colors.primary + "1A",
-    secondary: Colors.secondary,
+    primary: colors.primary + "1A",
+    secondary: colors.secondary,
     empty: "transparent",
   };
   return (
@@ -30,7 +31,7 @@ export const Card = ({
           padding,
           borderRadius: radius,
           borderWidth: ["empty", "primary"].includes(color) ? 1 : 0,
-          borderColor: color === "primary" ? Colors.ternary : Colors.border,
+          borderColor: color === "primary" ? colors.ternary : colors.border,
         },
         style,
       ]}

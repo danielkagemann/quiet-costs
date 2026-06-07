@@ -22,13 +22,14 @@ import Animated, {
 import { useIsFocused, useRouter } from "expo-router";
 import { Alert, Pressable, ScrollView, View } from "react-native";
 import { CalendarDays, EyeOff, House, Rows3 } from "lucide-react-native";
-import { Colors } from "./base/Colors";
+import { useColors } from "./base/useColors";
 
 export const OverviewScreen = () => {
   // hooks
   const db = useSQLiteContext();
   const router = useRouter();
   const isFocused = useIsFocused();
+  const colors = useColors();
 
   // derived state
   const [spaces, setSpaces] = useState<Space[]>([]);
@@ -89,30 +90,30 @@ export const OverviewScreen = () => {
         <Card color="empty" padding={8} radius={16}>
           <Row justify="between" gap={16}>
             <Row gap={8}>
-              <Rows3 color={Colors.primary} size={14} />
+              <Rows3 color={colors.primary} size={14} />
               <Text size="sm">{costs.length} Kosten</Text>
             </Row>
             <Row gap={8}>
-              <House color={Colors.primary} size={14} />
+              <House color={colors.primary} size={14} />
               <Text size="sm">{spaces.length} Spaces</Text>
             </Row>
           </Row>
           <View
             style={{
               height: 1,
-              backgroundColor: Colors.border,
+              backgroundColor: colors.border,
               marginVertical: 6,
             }}
           />
           <Row justify="between" gap={16}>
             <Row gap={8}>
-              <CalendarDays color={Colors.primary} size={14} />
+              <CalendarDays color={colors.primary} size={14} />
               <Text size="sm">
                 {CostService.formatAmount(total * 12)} / Jahr
               </Text>
             </Row>
             <Row gap={8}>
-              <EyeOff color={Colors.primary} size={14} />
+              <EyeOff color={colors.primary} size={14} />
               <Text size="sm">
                 {costs.filter((c) => !c.isActive).length} Inaktiv
               </Text>
@@ -179,7 +180,7 @@ export const OverviewScreen = () => {
                 <View
                   style={{
                     height: 1,
-                    backgroundColor: Colors.border,
+                    backgroundColor: colors.border,
                     marginTop: 16,
                   }}
                 />

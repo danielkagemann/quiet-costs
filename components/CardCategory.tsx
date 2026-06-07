@@ -5,7 +5,7 @@ import { Configuration } from "@/utils/configuration";
 import { CostService } from "@/services/cost.service";
 import { Pressable, View } from "react-native";
 import { useState } from "react";
-import { Colors } from "./base/Colors";
+import { useColors } from "./base/useColors";
 import { ChevronRight } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { VSpace } from "./base/VSpace";
@@ -23,6 +23,7 @@ export const CardCategory = ({
 }: CardCategoryProps) => {
   // hooks
   const router = useRouter();
+  const colors = useColors();
 
   // states
   const [isExpanded, setIsExpanded] = useState<boolean>(initiallyOpen);
@@ -50,7 +51,7 @@ export const CardCategory = ({
           {!cost.isActive && (
             <View
               style={{
-                backgroundColor: Colors.danger,
+                backgroundColor: colors.danger,
                 paddingVertical: 2,
                 paddingHorizontal: 4,
                 marginRight: 4,
@@ -69,7 +70,7 @@ export const CardCategory = ({
           {/* billing cycle */}
           <View
             style={{
-              backgroundColor: Colors.border,
+              backgroundColor: colors.border,
               paddingHorizontal: 5,
               paddingVertical: 1,
               borderRadius: 8,
@@ -85,14 +86,14 @@ export const CardCategory = ({
             <Text size="sm" color={cost.isActive ? "text" : "secondary"}>
               {amountText}
             </Text>
-            <ChevronRight size={16} color={Colors.secondary} />
+            <ChevronRight size={16} color={colors.secondary} />
           </Row>
         </Row>
         {index < costs.length - 1 && (
           <View
             style={{
               height: 1,
-              backgroundColor: Colors.border,
+              backgroundColor: colors.border,
               marginTop: 8,
             }}
           />
@@ -114,7 +115,7 @@ export const CardCategory = ({
         <View
           style={{
             height: 2,
-            backgroundColor: Colors.border,
+            backgroundColor: colors.border,
             marginLeft: -16,
             marginRight: -16,
           }}

@@ -1,12 +1,15 @@
 import { View } from "react-native";
-import { Colors } from "./Colors";
+import { useColors } from "./useColors";
 
-export const Divider = () => (
-  <View
-    style={{
-      height: 1,
-      backgroundColor: Colors.border,
-      marginVertical: 12,
-    }}
-  />
-);
+export const Divider = () => {
+  const colors = useColors();
+  return (
+    <View
+      style={{
+        height: 1,
+        backgroundColor: colors.border,
+        marginVertical: 12,
+      }}
+    />
+  );
+};

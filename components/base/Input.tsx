@@ -1,5 +1,5 @@
 import { TextInput } from "react-native";
-import { Colors } from "./Colors";
+import { useColors } from "./useColors";
 
 interface InputProps {
   placeholder?: string;
@@ -24,19 +24,21 @@ export const Input = ({
   onBlur,
   inputMode = "text",
 }: InputProps) => {
+  const colors = useColors();
   return (
     <TextInput
       accessibilityLabel={placeholder}
       placeholder={placeholder}
+      placeholderTextColor={colors.secondary}
       value={value}
       inputMode={inputMode}
       onChangeText={onChange}
       onBlur={onBlur}
       style={{
         fontSize: 17,
-        color: Colors.text,
+        color: colors.text,
         borderWidth: 1,
-        borderColor: Colors.border,
+        borderColor: colors.border,
         borderRadius: 8,
         padding: 8,
       }}

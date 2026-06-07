@@ -1,5 +1,5 @@
 import { Pressable, Text } from "react-native";
-import { Colors } from "./Colors";
+import { useColors } from "./useColors";
 
 interface ButtonProps {
   children: React.ReactNode | string;
@@ -16,13 +16,14 @@ export const Button = ({
   size = "md",
   radius = "md",
 }: ButtonProps) => {
+  const colors = useColors();
   const colorMap: Record<string, string> = {
-    primary: Colors.primary,
-    secondary: Colors.secondary,
+    primary: colors.primary,
+    secondary: colors.secondary,
     outline: "transparent",
     empty: "transparent",
-    light: Colors.ternary,
-    danger: Colors.danger,
+    light: colors.ternary,
+    danger: colors.danger,
   };
 
   const sizeMap: Record<string, number> = {
@@ -41,7 +42,7 @@ export const Button = ({
         { backgroundColor: colorMap[color] },
         color === "outline" && {
           borderWidth: 1,
-          borderColor: Colors.secondary,
+          borderColor: colors.secondary,
         },
         {
           paddingVertical: sizeMap[size],
@@ -55,11 +56,11 @@ export const Button = ({
     >
       <Text
         style={[
-          color === "primary" && { color: Colors.background },
-          color === "secondary" && { color: Colors.background },
-          color === "outline" && { color: Colors.secondary },
-          color === "empty" && { color: Colors.text },
-          color === "danger" && { color: Colors.white },
+          color === "primary" && { color: colors.white },
+          color === "secondary" && { color: colors.white },
+          color === "outline" && { color: colors.secondary },
+          color === "empty" && { color: colors.text },
+          color === "danger" && { color: colors.white },
           size === "sm" && { fontSize: 13 },
           size === "md" && { fontSize: 17 },
           size === "lg" && { fontSize: 20 },

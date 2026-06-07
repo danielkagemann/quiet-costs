@@ -1,5 +1,5 @@
 import { Pressable, View } from "react-native";
-import { Colors } from "./Colors";
+import { useColors } from "./useColors";
 
 interface ToggleProps {
   value: boolean;
@@ -8,6 +8,7 @@ interface ToggleProps {
 }
 
 export const Toggle = ({ value, ariaLabel, onChange }: ToggleProps) => {
+  const colors = useColors();
   return (
     <Pressable
       onPress={() => onChange(!value)}
@@ -21,8 +22,8 @@ export const Toggle = ({ value, ariaLabel, onChange }: ToggleProps) => {
           height: 20,
           borderRadius: 10,
           borderWidth: 1,
-          borderColor: Colors.secondary,
-          backgroundColor: Colors.border,
+          borderColor: colors.secondary,
+          backgroundColor: colors.border,
           padding: 2,
         }}
       >
@@ -31,7 +32,7 @@ export const Toggle = ({ value, ariaLabel, onChange }: ToggleProps) => {
             width: 15,
             height: 15,
             borderRadius: 8,
-            backgroundColor: value ? Colors.primary : Colors.secondary,
+            backgroundColor: value ? colors.primary : colors.secondary,
             transform: [{ translateX: value ? 12 : 0 }],
           }}
         />

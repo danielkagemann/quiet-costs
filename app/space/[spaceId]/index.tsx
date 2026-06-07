@@ -21,7 +21,7 @@ import { VSpace } from "@/components/base/VSpace";
 import { CardCategory } from "@/components/CardCategory";
 import { FABButton } from "@/components/base/FABButton";
 import { Configuration } from "@/utils/configuration";
-import { Colors } from "@/components/base/Colors";
+import { useColors } from "@/components/base/useColors";
 import { Coins, Pencil } from "lucide-react-native";
 
 export default function SpaceDetails() {
@@ -31,6 +31,7 @@ export default function SpaceDetails() {
   const isInFocus = useIsFocused();
   const router = useRouter();
   const { width: windowWidth } = useWindowDimensions();
+  const colors = useColors();
 
   // states
   const [space, setSpace] = useState<Space | null>(null);
@@ -72,7 +73,7 @@ export default function SpaceDetails() {
 
     return (
       <Row justify="start" gap={16} style={{ width: windowWidth - 72 }}>
-        <Coins size={24} strokeWidth={1} color={Colors.danger} />
+        <Coins size={24} strokeWidth={1} color={colors.danger} />
         <Text
           size="sm"
           color="danger"
@@ -102,7 +103,7 @@ export default function SpaceDetails() {
             accessibilityLabel="Space bearbeiten"
             accessibilityRole="button"
           >
-            <Pencil size={20} color={Colors.text} />
+            <Pencil size={20} color={colors.text} />
           </Pressable>
         }
       />

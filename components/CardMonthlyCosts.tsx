@@ -3,7 +3,7 @@ import { Card } from "./base/Card";
 import { Text } from "./base/Text";
 import { VSpace } from "./base/VSpace";
 import { View } from "react-native";
-import { Colors } from "./base/Colors";
+import { useColors } from "./base/useColors";
 import { LineChart, TLineChartPoint } from "react-native-wagmi-charts";
 import { Stop } from "react-native-svg";
 
@@ -15,6 +15,7 @@ export const CardMonthlyCosts = ({
   total,
   chartData,
 }: CardMonthlyCostsProps) => {
+  const colors = useColors();
   return (
     <Card color="primary" padding={16} radius={12}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -35,16 +36,16 @@ export const CardMonthlyCosts = ({
             <LineChart.Provider data={chartData}>
               <LineChart width={130} height={100} yGutter={12}>
                 {/* Filled Area */}
-                <LineChart.Path color={Colors.primary} width={2}>
-                  <LineChart.Gradient color={Colors.primary}>
+                <LineChart.Path color={colors.primary} width={2}>
+                  <LineChart.Gradient color={colors.primary}>
                     <Stop
                       offset="0%"
-                      stopColor={Colors.primary}
+                      stopColor={colors.primary}
                       stopOpacity={0.35}
                     />
                     <Stop
                       offset="100%"
-                      stopColor={Colors.primary}
+                      stopColor={colors.primary}
                       stopOpacity={0.02}
                     />
                   </LineChart.Gradient>
