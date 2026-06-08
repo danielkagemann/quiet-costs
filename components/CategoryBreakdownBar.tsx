@@ -10,20 +10,6 @@ interface CategoryBreakdownBarProps {
   costs: Cost[];
 }
 
-// Fixed hues per category index for consistent color coding
-const CATEGORY_COLORS = [
-  "#6366F1", // Nebenkosten — indigo
-  "#10B981", // Versicherung — emerald
-  "#F59E0B", // Steuern — amber
-  "#3B82F6", // Digitale Dienste — blue
-  "#EC4899", // Streaming — pink
-  "#8B5CF6", // Haus — violet
-  "#EF4444", // Mobilität — red
-  "#14B8A6", // Gesundheit — teal
-  "#F97316", // Mitgliedschaften — orange
-  "#6B7280", // Sonstiges — gray
-];
-
 export function CategoryBreakdownBar({
   costs,
 }: Readonly<CategoryBreakdownBarProps>) {
@@ -54,7 +40,8 @@ export function CategoryBreakdownBar({
             key={catId}
             style={{
               flex: amount / spaceTotal,
-              backgroundColor: CATEGORY_COLORS[catId] ?? colors.secondary,
+              backgroundColor:
+                Configuration.categoryColors[catId] ?? colors.secondary,
               height: 8,
             }}
           />
@@ -74,7 +61,8 @@ export function CategoryBreakdownBar({
                     width: 8,
                     height: 8,
                     borderRadius: 4,
-                    backgroundColor: CATEGORY_COLORS[catId] ?? colors.secondary,
+                    backgroundColor:
+                      Configuration.categoryColors[catId] ?? colors.secondary,
                     marginTop: 2,
                   }}
                 />

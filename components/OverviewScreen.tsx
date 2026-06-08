@@ -204,6 +204,7 @@ export const OverviewScreen = () => {
                 <CardSpace
                   name={space.name}
                   description={space.description}
+                  imageData={space.imageData}
                   costs={spaceCosts}
                 />
               </Pressable>

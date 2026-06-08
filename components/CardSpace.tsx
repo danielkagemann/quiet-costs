@@ -9,28 +9,50 @@ import { ChevronRight } from "lucide-react-native";
 interface CardSpaceProps {
   name: string;
   description?: string;
+  imageData?: string;
   costs: Cost[];
 }
 
-export const CardSpace = ({ name, description, costs }: CardSpaceProps) => {
+export const CardSpace = ({
+  name,
+  description,
+  imageData,
+  costs,
+}: CardSpaceProps) => {
+  const emoji = imageData && imageData.length <= 4 ? imageData : null;
+
   if (costs.length === 0) {
     return (
-      <View>
-        <Text size="md" weight="bold">
-          {name}
-        </Text>
-        {!!description && (
-          <Text color="secondary" size="sm">
-            {description}
-          </Text>
+      <Row gap={12} justify="start">
+        {emoji && (
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 10,
+              backgroundColor: "#6366F11A",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text size="lg">{emoji}</Text>
+          </View>
         )}
-        <VSpace size={4} />
-
-        <Text color="secondary" size="sm">
-          Noch keine laufenden Kosten.
-        </Text>
-        <VSpace size={4} />
-      </View>
+        <View style={{ flex: 1 }}>
+          <Text size="md" weight="bold">
+            {name}
+          </Text>
+          {!!description && (
+            <Text color="secondary" size="sm">
+              {description}
+            </Text>
+          )}
+          <VSpace size={4} />
+          <Text color="secondary" size="sm">
+            Noch keine laufenden Kosten.
+          </Text>
+        </View>
+      </Row>
     );
   }
 
@@ -39,6 +61,21 @@ export const CardSpace = ({ name, description, costs }: CardSpaceProps) => {
   // show more information with click options, e.g. show all costs, edit, delete, etc.
   return (
     <Row justify="between" gap={16}>
+      {emoji && (
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 10,
+            backgroundColor: "#6366F11A",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Text size="lg">{emoji}</Text>
+        </View>
+      )}
       <View style={{ gap: 4, flex: 1 }}>
         <Text size="md" weight="bold">
           {name}
