@@ -30,8 +30,5 @@
 🟠 Mid Term — High Impact 6. Space emoji picker — data pipeline is already 100% built (SpaceForm.tsx, CardSpace.tsx)
 imageData exists in the type, DB schema, and both addSpace/updateSpace. The UI just never exposes it. Add a row of emoji chips in SpaceForm and render the chosen emoji in CardSpace. Visual differentiation per space is the single biggest UX improvement available — and it costs one day of work to activate a field that's already wired.
 
-7. Category breakdown bar in SpaceDetails (app/space/[spaceId]/index.tsx)
-   groupCostsByCategory already returns everything needed. Replace the single "most expensive category" sentence with a full proportional bar breakdown using only View flex widths — no chart library. Transforms SpaceDetails from a cost list into a dashboard.
-
 8. Swipe to toggle active/inactive (CardCategory.tsx)
    GestureHandlerRootView already wraps the app. Toggling a cost's status currently takes 4 taps + navigation. A Swipeable row revealing one action ("Pausieren" / "Aktivieren") makes the most common management action feel native and effortless.

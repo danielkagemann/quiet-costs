@@ -1,5 +1,4 @@
 import { Card } from "@/components/base/Card";
-import { Row } from "@/components/base/Row";
 import { TopNavigation } from "@/components/TopNavigation";
 import { CostService } from "@/services/cost.service";
 import { DatabaseService } from "@/services/database.service";
@@ -8,20 +7,14 @@ import { Space } from "@/types/spaces";
 import { useIsFocused, useLocalSearchParams, useRouter } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  Pressable,
-  ScrollView,
-  useWindowDimensions,
-  View,
-} from "react-native";
+import { Alert, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
 import { CardCategory } from "@/components/CardCategory";
 import { FABButton } from "@/components/base/FABButton";
-import { Configuration } from "@/utils/configuration";
 import { useColors } from "@/components/base/useColors";
-import { Coins, Pencil } from "lucide-react-native";
+import { Pencil } from "lucide-react-native";
+import { CategoryBreakdownBar } from "@/components/CategoryBreakdownBar";
 import { InfoBox } from "@/components/InfoBox";
 
 export default function SpaceDetails() {
@@ -30,7 +23,6 @@ export default function SpaceDetails() {
   const db = useSQLiteContext();
   const isInFocus = useIsFocused();
   const router = useRouter();
-  const { width: windowWidth } = useWindowDimensions();
   const colors = useColors();
 
   // states
@@ -59,37 +51,6 @@ export default function SpaceDetails() {
   // derived state
   const groupedCosts: Record<string, Cost[]> =
     CostService.groupCostsByCategory(costs);
-
-  /**
-   * render expensive category info
-   * @returns
-   */
-  function renderExpensiveCategoryInfo() {
-    const categoryWithMostCosts: [string, number] | null =
-      CostService.getCategoryWithMostAmount(costs);
-    if (!categoryWithMostCosts) return null;
-
-    const [catId, percentage] = categoryWithMostCosts;
-
-    return (
-      <Row justify="start" gap={16} style={{ width: windowWidth - 72 }}>
-        <Coins size={24} strokeWidth={1} color={colors.danger} />
-        <Text
-          size="sm"
-          color="danger"
-          weight="light"
-          style={{ marginBottom: 16 }}
-        >
-          Deine teuerste Kategorie ist{" "}
-          {Configuration.categories[Number(catId as string)]} mit{" "}
-          <Text size="sm" color="danger" weight="bold">
-            {percentage.toFixed(2)}%
-          </Text>{" "}
-          der Gesamtkosten.
-        </Text>
-      </Row>
-    );
-  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -129,9 +90,8 @@ export default function SpaceDetails() {
             Übersicht zu erleichtern. Tippe auf eine Kategorie, um die Details
             zu sehen.
           </Text>
+          {costs.length > 0 && <CategoryBreakdownBar costs={costs} />}
         </Card>
-
-        {renderExpensiveCategoryInfo()}
 
         {
           /* render empty */
