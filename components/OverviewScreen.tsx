@@ -21,7 +21,13 @@ import Animated, {
 } from "react-native-reanimated";
 import { useIsFocused, useRouter } from "expo-router";
 import { Alert, Pressable, ScrollView, View } from "react-native";
-import { CalendarDays, EyeOff, House, Rows3 } from "lucide-react-native";
+import {
+  CalendarDays,
+  EyeOff,
+  House,
+  PauseCircle,
+  Rows3,
+} from "lucide-react-native";
 import { useColors } from "./base/useColors";
 
 export const OverviewScreen = () => {
@@ -86,6 +92,9 @@ export const OverviewScreen = () => {
     }
 
     // we have costs, show the summary card
+    const inactiveCosts = costs.filter((c) => !c.isActive);
+    const pausedTotal = CostService.getPausedTotalPerMonth(costs);
+
     return (
       <>
         <Card color="empty" padding={8} radius={16}>
@@ -114,19 +123,36 @@ export const OverviewScreen = () => {
               </Text>
             </Row>
             <Row gap={8}>
-              <EyeOff color={colors.primary} size={14} />
-              <Text size="sm">
-                {costs.filter((c) => !c.isActive).length} Inaktiv
+              <EyeOff color={colors.secondary} size={14} />
+              <Text size="sm" color="secondary">
+                {inactiveCosts.length} Inaktiv
               </Text>
             </Row>
           </Row>
+          {pausedTotal > 0 && (
+            <>
+              <View
+                style={{
+                  height: 1,
+                  backgroundColor: colors.border,
+                  marginVertical: 6,
+                }}
+              />
+              <Row gap={8}>
+                <PauseCircle color={colors.secondary} size={14} />
+                <Text size="sm" color="secondary">
+                  Pausiert: {CostService.formatAmount(pausedTotal)} / Mon
+                </Text>
+              </Row>
+            </>
+          )}
         </Card>
         <VSpace size={8} />
         <CardMonthlyCosts
           total={total}
           chartData={costs
             .slice(-5)
-            .map((c, i) => ({ timestamp: i, value: c.amount }))}
+            .map((c, i) => ({ timestamp: i, value: CostService.getAmount(c) }))}
         />
       </>
     );
@@ -175,7 +201,11 @@ export const OverviewScreen = () => {
                 role="button"
                 accessibilityLabel={`Space ${space.name} anzeigen`}
               >
-                <CardSpace name={space.name} costs={spaceCosts} />
+                <CardSpace
+                  name={space.name}
+                  description={space.description}
+                  costs={spaceCosts}
+                />
               </Pressable>
               {index < spaces.length - 1 && (
                 <View
@@ -190,7 +220,9 @@ export const OverviewScreen = () => {
           );
         })}
       </ScrollView>
-      {total > 0 && <FABButton onPress={() => router.push("/cost/add")} />}
+      {costs.length > 0 && (
+        <FABButton onPress={() => router.push("/cost/add")} />
+      )}
     </SafeAreaView>
   );
 };

@@ -8,16 +8,22 @@ import { ChevronRight } from "lucide-react-native";
 
 interface CardSpaceProps {
   name: string;
+  description?: string;
   costs: Cost[];
 }
 
-export const CardSpace = ({ name, costs }: CardSpaceProps) => {
+export const CardSpace = ({ name, description, costs }: CardSpaceProps) => {
   if (costs.length === 0) {
     return (
       <View>
         <Text size="md" weight="bold">
           {name}
         </Text>
+        {!!description && (
+          <Text color="secondary" size="sm">
+            {description}
+          </Text>
+        )}
         <VSpace size={4} />
 
         <Text color="secondary" size="sm">
@@ -33,10 +39,15 @@ export const CardSpace = ({ name, costs }: CardSpaceProps) => {
   // show more information with click options, e.g. show all costs, edit, delete, etc.
   return (
     <Row justify="between" gap={16}>
-      <View style={{ gap: 8 }}>
+      <View style={{ gap: 4, flex: 1 }}>
         <Text size="md" weight="bold">
           {name}
         </Text>
+        {!!description && (
+          <Text size="xs" color="secondary">
+            {description}
+          </Text>
+        )}
         <Text size="sm" color="secondary">
           {costs.length} Einträge
         </Text>

@@ -46,6 +46,22 @@ export const CostService = {
     return cost.amount; // fallback, should not happen
   },
 
+  getMonthlyEquivalent(cost: Cost) {
+    const divisors: Record<string, number> = {
+      monthly: 1,
+      quarterly: 3,
+      half_yearly: 6,
+      yearly: 12,
+    };
+    return cost.amount / (divisors[cost.billingCycle] ?? 1);
+  },
+
+  getPausedTotalPerMonth(costs: Cost[]) {
+    return costs
+      .filter((c) => !c.isActive)
+      .reduce((sum, c) => sum + CostService.getMonthlyEquivalent(c), 0);
+  },
+
   formatAmount(amount: number) {
     return Intl.NumberFormat("de-DE", {
       style: "currency",
