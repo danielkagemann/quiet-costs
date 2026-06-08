@@ -1,4 +1,4 @@
-import { Card, CardTitle } from "@/components/base/Card";
+import { Card } from "@/components/base/Card";
 import { Row } from "@/components/base/Row";
 import { TopNavigation } from "@/components/TopNavigation";
 import { CostService } from "@/services/cost.service";
@@ -17,12 +17,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text } from "@/components/base/Text";
-import { VSpace } from "@/components/base/VSpace";
 import { CardCategory } from "@/components/CardCategory";
 import { FABButton } from "@/components/base/FABButton";
 import { Configuration } from "@/utils/configuration";
 import { useColors } from "@/components/base/useColors";
 import { Coins, Pencil } from "lucide-react-native";
+import { InfoBox } from "@/components/InfoBox";
 
 export default function SpaceDetails() {
   // hooks
@@ -132,6 +132,16 @@ export default function SpaceDetails() {
         </Card>
 
         {renderExpensiveCategoryInfo()}
+
+        {
+          /* render empty */
+          costs.length === 0 && (
+            <InfoBox
+              title="Keine Kosten"
+              description="Füge Kosten hinzu, um sie hier zu sehen."
+            />
+          )
+        }
 
         <View style={{ gap: 12 }}>
           {Object.keys(groupedCosts).map((category: string, index: number) => (

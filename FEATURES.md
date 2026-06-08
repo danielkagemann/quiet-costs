@@ -16,8 +16,8 @@
 
 ## Long Term (months)
 
-[Architecture] — ~~No dark mode. Colors.ts is a single light palette. Wrapping it in a useColors() hook that respects useColorScheme() is much cheaper to retrofit now than after the component count grows.~~ **Done** — `lightColors`/`darkColors` palettes in `Colors.ts`, `useColors()` hook in `useColors.ts`, all components migrated.
-
 [Data / Insight] — No createdAt on costs — impossible to show trends, spending by month, or renewal dates. Adding a createdAt INTEGER (Unix timestamp) via migration unlocks an entire analytical layer.
 
 [Internationalization] — Currency is hardcoded to EUR in CostService.formatAmount. A single currency config key in AsyncStorage with EUR fallback would meaningfully broaden the app's audience.
+
+---

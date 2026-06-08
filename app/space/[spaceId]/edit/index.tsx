@@ -5,6 +5,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { DatabaseService } from "@/services/database.service";
+import { Loading } from "@/components/Loading";
 
 export default function SpaceEditScreen() {
   // hooks
@@ -37,7 +38,7 @@ export default function SpaceEditScreen() {
       );
   }
 
-  if (!space) return null;
+  if (!space) return <Loading />;
 
   return (
     <SpaceForm

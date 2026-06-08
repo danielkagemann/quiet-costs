@@ -122,7 +122,7 @@ export default function AddCostScreen() {
               setCost({ ...cost, [attribute]: index });
               if (attribute === "categoryId") setCategoryManuallySet(true);
             }}
-            key={index}
+            key={item}
           >
             {item}
           </Chip>

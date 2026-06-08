@@ -138,12 +138,12 @@ export const CardCategory = ({
         <Row justify="between">
           <View
             style={{
-              backgroundColor: Colors.border,
+              backgroundColor: colors.border,
               padding: 6,
               borderRadius: 20,
             }}
           >
-            <IconComponent size={12} color={Colors.secondary} />
+            <IconComponent size={12} color={colors.secondary} />
           </View>
           <Text size="md" weight="bold" style={{ flex: 1, marginLeft: 8 }}>
             {Configuration.categories[categoryId]}

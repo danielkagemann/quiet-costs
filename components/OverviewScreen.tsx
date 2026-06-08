@@ -49,13 +49,14 @@ export const OverviewScreen = () => {
       );
   }, [db, isFocused]);
 
+  // derived state
+  const total = CostService.getTotalPerMonth(costs);
+
   /**
    * render summary
    * @returns
    */
   function renderSummary() {
-    const total = CostService.getTotalPerMonth(costs);
-
     if (total === 0) {
       return (
         <>
@@ -189,9 +190,7 @@ export const OverviewScreen = () => {
           );
         })}
       </ScrollView>
-      {costs.length > 0 && (
-        <FABButton onPress={() => router.push("/cost/add")} />
-      )}
+      {total > 0 && <FABButton onPress={() => router.push("/cost/add")} />}
     </SafeAreaView>
   );
 };
